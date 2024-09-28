@@ -1,0 +1,29 @@
+{
+    "Comment":"敌人属性配置",
+    
+    "Enemy1" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 120,
+        "Name"   : "丧尸"
+    },
+    "Enemy2" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 120,
+        "Name"   : "丧尸"
+    },
+    "Enemy3" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 120,
+        "Name"   : "丧尸"
+    },
+    "Enemy4" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 120,
+        "Name"   : "丧尸"
+    },
+    "Enemy5" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 120,
+        "Name"   : "丧尸"
+    }
+}
