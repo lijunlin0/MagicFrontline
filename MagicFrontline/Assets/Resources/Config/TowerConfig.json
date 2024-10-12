@@ -1,0 +1,28 @@
+{
+    "Comment":"塔属性配置",
+    
+    "Bow" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    },
+    "FrozenBow" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    },
+    "ExplosiveSlingshot" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    },
+    "Jet" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    },
+    "LightwaveStone" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    },
+    "ThunderStone" : {
+        "Attack" : [10, 15, 20],
+        "AttackInterval" : [1.0,0.8,0.6]
+    }
+}

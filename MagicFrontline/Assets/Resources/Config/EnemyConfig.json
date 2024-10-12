@@ -3,27 +3,52 @@
     
     "Enemy1" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 120,
+        "MoveSpeed" : 250,
         "Name"   : "丧尸"
     },
     "Enemy2" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 120,
+        "MoveSpeed" : 250,
         "Name"   : "丧尸"
     },
     "Enemy3" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 120,
+        "MoveSpeed" : 250,
         "Name"   : "丧尸"
     },
     "Enemy4" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 120,
+        "MoveSpeed" : 250,
         "Name"   : "丧尸"
     },
     "Enemy5" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 120,
+        "MoveSpeed" : 250,
+        "Name"   : "丧尸"
+    },
+    "Enemy6" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 250,
+        "Name"   : "丧尸"
+    },
+    "Enemy7" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 250,
+        "Name"   : "丧尸"
+    },
+    "Enemy8" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 250,
+        "Name"   : "丧尸"
+    },
+    "Enemy9" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 250,
+        "Name"   : "丧尸"
+    },
+    "Enemy10" : {
+        "Health" : [80, 40],
+        "MoveSpeed" : 250,
         "Name"   : "丧尸"
     }
 }
