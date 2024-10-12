@@ -44,13 +44,13 @@ public class TowerCreateManager
             }
             Vector3Int logicPosition=FightModel.GetCurrent().GetMap().WorldToLogicPosition(mousePosition);
             // 如果点击在建造区域，创建塔建造 UI
-            if (mMap.IsBuild(mousePosition))
+            if (mMap.IsBuild(logicPosition))
             {
                 Debug.Log("创建建造UI");
                 mIsOpenTowerCreateUI = true;
                 mTowerCreateUI = TowerCreateUI.Create(logicPosition,()=>{mIsOpenTowerCreateUI=false;});
             }
-            else if (mMap.IsTower(mousePosition))
+            else if (mMap.IsTower(logicPosition))
             {
                 Debug.Log("创建选择UI");
                 mTowerSelectUI=TowerSelectUI.Create(logicPosition,()=>{mIsOpenTowerSelectUI=false;});

@@ -62,37 +62,31 @@ public class Map : MonoBehaviour
         return mTurningPointList;
     }
 
-    public TileType GetTileType(Vector3 position)
+    public TileType GetTileType(Vector3Int position)
     {
-        Vector3Int LogicPosition=WorldToLogicPosition(position);
-        return mTileTypes[LogicPosition];
+        return mTileTypes[position];
     }
 
-    public bool IsBuild(Vector3 position)
+    public bool IsBuild(Vector3Int position)
     {
-        Vector3Int LogicPosition=WorldToLogicPosition(position);
-        return mTileTypes[LogicPosition]==TileType.Build;
+        return mTileTypes[position]==TileType.Build;
     }
-    public bool IsTower(Vector3 position)
+    public bool IsTower(Vector3Int position)
     {
-        Vector3Int LogicPosition=WorldToLogicPosition(position);
-        return mTileTypes[LogicPosition]==TileType.Tower;
+        return mTileTypes[position]==TileType.Tower;
     }
-    public bool IsObstacle(Vector3 position)
+    public bool IsObstacle(Vector3Int position)
     {
-        Vector3Int LogicPosition=WorldToLogicPosition(position);
-        return mTileTypes[LogicPosition]==TileType.Obstacle;
+        return mTileTypes[position]==TileType.Obstacle;
     }
 
-    public void AddTower(Vector3 position)
+    public void AddTower(Vector3Int position)
     {
-       Vector3Int logicPosition = WorldToLogicPosition(position);
-       mTileTypes[logicPosition]=TileType.Tower;
+       mTileTypes[position]=TileType.Tower;
     }
-    public void RemoveTower(Vector3 position)
+    public void RemoveTower(Vector3Int position)
     {
-        Vector3Int logicPosition = WorldToLogicPosition(position);
-       mTileTypes[logicPosition]=TileType.Build;
+       mTileTypes[position]=TileType.Build;
     }
 
     public Vector3 LogicToWorldPosition(Vector3Int LogicPosition)
@@ -114,12 +108,6 @@ public class Map : MonoBehaviour
         int x = value % mWidth;
         int y = value / mWidth;
         return new Vector3Int(x, y, 0);
-    }
-
-    //转换为标准坐标
-    public Vector3 GetStandardPosition(Vector3 position)
-    {
-        return LogicToWorldPosition(WorldToLogicPosition(position));
     }
 
     public void InitTileType()

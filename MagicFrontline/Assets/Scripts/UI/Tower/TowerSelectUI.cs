@@ -23,7 +23,7 @@ public class TowerSelectUI : MonoBehaviour
     {
         mCreatePosition=createPosition;
         mSelectTowerCallback=selectTowerCallback;
-        transform.position=mCreatePosition;
+        transform.position=FightModel.GetCurrent().GetMap().LogicToWorldPosition(mCreatePosition);
         FightModel fightModel=FightModel.GetCurrent();
         //拆除按钮
         Button destroyButton=transform.Find("Destroy").GetComponent<Button>();
@@ -48,7 +48,7 @@ public class TowerSelectUI : MonoBehaviour
         Tower tower=fightModel.GetTower(createPosition);
         int shootRange=tower.GetShootRange();
         RectTransform rectTransform=transform.Find("ShootRange").GetComponent<RectTransform>();
-        rectTransform.sizeDelta=new Vector2(shootRange,shootRange);
+        rectTransform.sizeDelta=new Vector2(shootRange*2,shootRange*2);
 
         //升级按钮
         Button levelUpButton=transform.Find("LevelUp").GetComponent<Button>();

@@ -2,7 +2,7 @@
     "Comment":"敌人属性配置",
     
     "Enemy1" : {
-        "Health" : [80, 40],
+        "Health" : [20, 10],
         "MoveSpeed" : 250,
         "Name"   : "丧尸"
     },
