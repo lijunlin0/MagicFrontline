@@ -14,12 +14,11 @@ public class FightScene : MonoBehaviour
     }
     public void Start()
     {
-         
+
     }
     public void InitScene()
     {
         Camera camera=Camera.main;
-        camera.orthographicSize=Utility.WindowHeight/2;
     }
 
 }
