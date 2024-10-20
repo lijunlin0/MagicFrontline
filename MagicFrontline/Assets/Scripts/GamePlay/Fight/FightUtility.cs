@@ -21,7 +21,7 @@ public class FightUtility
     {
         return Mathf.Atan2(direction.y,direction.x);
     }
-    public static void MoveTowardsRotation(GameObject gameObject,int MoveSpeed,float offsetAngle=0)
+    public static void MoveTowardsRotation(GameObject gameObject,float MoveSpeed,float offsetAngle=0)
     {
         Vector3 moveDirection=FightUtility.RotationToDirection(gameObject.transform.rotation,offsetAngle);
         Debug.Log("移动:"+moveDirection+",速度"+MoveSpeed);

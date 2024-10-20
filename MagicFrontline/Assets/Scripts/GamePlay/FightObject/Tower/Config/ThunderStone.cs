@@ -17,7 +17,7 @@ public class ThunderStone : Tower
         return thunderStone;
     }
 
-    public void Init(int level,Vector3Int position,Tuple<int,float,int> property)
+    public void Init(int level,Vector3Int position,Tuple<int,float,int,int> property)
     {
         base.Init(level,position,property,"ThunderStone");
         mIsRotate=false;

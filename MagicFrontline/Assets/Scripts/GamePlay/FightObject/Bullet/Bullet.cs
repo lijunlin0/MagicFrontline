@@ -53,10 +53,10 @@ public class Bullet : MonoBehaviour
         {
             //重新获取一个敌人替换为目标
             mTarget=FightUtility.GetTargetEnemy(transform.position,100);
-            if(mTarget==null)
-            {
-                FightUtility.MoveTowardsRotation(gameObject,mMoveSpeed,OffsetAngle);
-            }
+        }
+        if(mTarget==null)
+        {
+            FightUtility.MoveTowardsRotation(gameObject,mMoveSpeed,OffsetAngle);
         }
     }
 

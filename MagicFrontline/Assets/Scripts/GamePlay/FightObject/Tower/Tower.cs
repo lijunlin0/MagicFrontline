@@ -9,6 +9,7 @@ public class Tower : MonoBehaviour
     protected string mName;
     protected StatusEffectId mStatusEffectId;
     protected int mAttack=10;
+    protected int mCreatePrice;
     protected float mAttackinterval=1;
     protected bool mIsDead=false;
     protected int mLevel=1;
@@ -22,7 +23,7 @@ public class Tower : MonoBehaviour
     protected float mAnimationOffsetTime=0;
     //是否需要在攻击时朝向敌人
     protected bool mIsRotate=false;
-    public virtual void Init(int level,Vector3Int position,Tuple<int,float,int> property,string name,StatusEffectId statusEffectId=StatusEffectId.None)
+    public virtual void Init(int level,Vector3Int position,Tuple<int,float,int,int> property,string name,StatusEffectId statusEffectId=StatusEffectId.None)
     {
         mLevel=level;
         mName=name;
@@ -33,6 +34,7 @@ public class Tower : MonoBehaviour
         mAttack=property.Item1;
         mAttackinterval=property.Item2;
         mShootRange=property.Item3;
+        mCreatePrice=property.Item4;
         mAnimator=GetComponent<Animator>();
         PlayIdleAnimation();
     }

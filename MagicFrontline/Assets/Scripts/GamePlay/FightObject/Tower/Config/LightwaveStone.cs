@@ -18,7 +18,7 @@ public class LightwaveStone : Tower
         lightwaveStone.Init(level,position,property);
         return lightwaveStone;
     }
-     public void Init(int level,Vector3Int position,Tuple<int,float,int> property)
+     public void Init(int level,Vector3Int position,Tuple<int,float,int,int> property)
     {
         base.Init(level,position,property,"LightwaveStone");
         mIsRotate=false;

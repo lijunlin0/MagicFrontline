@@ -15,7 +15,7 @@ public class Bow : Tower
         bow.Init(level,position,property);
         return bow;
     }
-    public void Init(int level,Vector3Int position,Tuple<int,float,int> property)
+    public void Init(int level,Vector3Int position,Tuple<int,float,int,int> property)
     {
         base.Init(level,position,property,"Bow");
         mIsRotate=true;

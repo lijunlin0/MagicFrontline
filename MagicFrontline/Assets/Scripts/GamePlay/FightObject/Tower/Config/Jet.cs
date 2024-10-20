@@ -15,7 +15,7 @@ public class Jet : Tower
         jet.Init(level,position,property);
         return jet;
     }
-     public void Init(int level,Vector3Int position,Tuple<int,float,int> property)
+     public void Init(int level,Vector3Int position,Tuple<int,float,int,int> property)
     {
         base.Init(level,position,property,"Jet");
         mIsRotate=true;

@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -6,6 +7,10 @@ using UnityEngine.UI;
 public class TowerSelectUI : MonoBehaviour
 {
     protected const int ShootRangeSize=100;
+    protected int mLevelUpPrice;
+    protected int mRemovePrice;
+    protected TMP_Text mLevelUpPriceText; 
+    protected TMP_Text mRemovePriceText; 
     private Vector3Int mCreatePosition;
     private Callback mSelectTowerCallback;
 
@@ -25,11 +30,22 @@ public class TowerSelectUI : MonoBehaviour
         mSelectTowerCallback=selectTowerCallback;
         transform.position=FightModel.GetCurrent().GetMap().LogicToWorldPosition(mCreatePosition);
         FightModel fightModel=FightModel.GetCurrent();
+        Tower tower=fightModel.GetTower(createPosition);
+        if(tower.GetLevel()<3)
+        {
+            mLevelUpPrice=TowerUtility.GetTowerCreatePrice(tower.GetName(),tower.GetLevel()+1);
+            mLevelUpPriceText=transform.Find("LevelUp/Price").GetComponent<TextMeshProUGUI>();
+            mLevelUpPriceText.text=mLevelUpPrice.ToString();
+        }
+        mRemovePrice=TowerUtility.GetTowerRemovePrice(tower.GetName(),tower.GetLevel());
+        mRemovePriceText=transform.Find("Remove/Price").GetComponent<TextMeshProUGUI>();
+        mRemovePriceText.text=mRemovePrice.ToString();
         //拆除按钮
-        Button destroyButton=transform.Find("Destroy").GetComponent<Button>();
+        Button destroyButton=transform.Find("Remove").GetComponent<Button>();
         destroyButton.onClick.AddListener(()=>
         {
             fightModel.RemoveTower(createPosition);
+            fightModel.AddCoins(mRemovePrice);
             if(gameObject!=null)
             {
                 Destroy(gameObject);
@@ -37,7 +53,6 @@ public class TowerSelectUI : MonoBehaviour
             mSelectTowerCallback();
         });
         //攻击范围显示
-        Tower tower=fightModel.GetTower(createPosition);
         int shootRange=tower.GetShootRange();
         RectTransform rectTransform=transform.Find("ShootRange").GetComponent<RectTransform>();
         rectTransform.sizeDelta=new Vector2(shootRange*2,shootRange*2);
@@ -55,9 +70,13 @@ public class TowerSelectUI : MonoBehaviour
         Button levelUpButton=transform.Find("LevelUp").GetComponent<Button>();
         levelUpButton.onClick.AddListener(()=>
         {
-            
-            fightModel.RemoveTower(createPosition);
-            fightModel.AddTower(CreateLevelUpTower(tower,tower.GetLevel()+1,tower.transform.rotation),mCreatePosition);
+            //钱足够升级
+            if(mLevelUpPrice<=FightModel.GetCurrent().GetCoins())
+            {
+                fightModel.RemoveTower(createPosition);
+                fightModel.AddTower(CreateLevelUpTower(tower,tower.GetLevel()+1,tower.transform.rotation),mCreatePosition);
+                fightModel.RemoveCoins(mRemovePrice);
+            }
             if(gameObject!=null)
             {
                 Destroy(gameObject);

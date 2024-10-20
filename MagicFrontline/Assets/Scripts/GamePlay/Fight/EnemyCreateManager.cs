@@ -12,15 +12,17 @@ public class EnemyCreateManager
     private Vector3Int mCreatePosition;
     private List<Enemy> mEnemies;
     private List<List<EnemyId>> mPendingEnemy;
+    private EnemyWaveUI mEnemyWaveUI;
     private int mCurrentWaveIndex=0;
     //当前波次敌人生成是否完成
     private bool mIsEnemyWaveCreate=true;
     public EnemyCreateManager()
-    {       
+    {   
         mEnemies=FightModel.GetCurrent().GetEnemies();
         mMap=FightModel.GetCurrent().GetMap();
         mPendingEnemy=new List<List<EnemyId>>();
         LevelOneEnemyListInit();
+        mEnemyWaveUI=EnemyWaveUI.Create(mPendingEnemy.Count);
     }
 
     private void AddEnemyIdList(EnemyId enemyId,int num)
@@ -49,6 +51,7 @@ public class EnemyCreateManager
 
     public void CreateEnemyWave()
     {
+        mEnemyWaveUI.OnEnemyWavesChanged();
         int count=mPendingEnemy[mCurrentWaveIndex].Count;
         for(int i=0;i<count;i++)
         {

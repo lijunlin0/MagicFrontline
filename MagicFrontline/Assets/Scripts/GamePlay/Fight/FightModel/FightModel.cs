@@ -1,10 +1,12 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class FightModel
 {
     private static FightModel sCurrent;
+    private int mCoins;
     private List<Enemy> mEnemyList;
     private Dictionary<int,Tower> mTowers;
     private List<Bullet> mBulletList;
@@ -23,6 +25,17 @@ public class FightModel
         int key=mMap.LogicPositionToInt(position);
         mTowers[key]=tower;
     }
+    public void AddCoins(int number)
+    {
+        mCoins+=number;
+        FightManager.GetCurrent().GetCointUI().OnCoinsChanged(number);
+    }
+    public void RemoveCoins(int number)
+    {
+        mCoins-=number;
+        FightManager.GetCurrent().GetCointUI().OnCoinsChanged(-number);
+    }
+    public int GetCoins(){return mCoins;}
     public void RemoveTower(Vector3Int position)
     {
         int key=mMap.LogicPositionToInt(position);
@@ -49,6 +62,7 @@ public class FightModel
         mEnemyList=new List<Enemy>();
         mTowers=new Dictionary<int,Tower>();
         mBulletList=new List<Bullet>();
+        mCoins=1000;
         mMap=Map.Create();
         Map.CreatePortal();
         mEnemyCreateManager=new EnemyCreateManager();

@@ -144,6 +144,7 @@ public class Enemy : MonoBehaviour
 
     public void PlayDestroyAnimation()
     {
+        Coin.Create(transform.position,20);
         mAnimator.Play(mEnemyId.ToString()+"Death");
         mSpriteRenderer.DOFade(0,0.4f).OnComplete(()=>
         {
