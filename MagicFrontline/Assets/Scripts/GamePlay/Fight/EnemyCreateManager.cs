@@ -13,6 +13,8 @@ public class EnemyCreateManager
     private List<Enemy> mEnemies;
     private List<List<EnemyId>> mPendingEnemy;
     private int mCurrentWaveIndex=0;
+    //当前波次敌人生成是否完成
+    private bool mIsEnemyWaveCreate=true;
     public EnemyCreateManager()
     {       
         mEnemies=FightModel.GetCurrent().GetEnemies();
@@ -35,6 +37,11 @@ public class EnemyCreateManager
     {
         mPendingEnemy.Clear();
         AddEnemyIdList(EnemyId.Enemy1,10);
+        AddEnemyIdList(EnemyId.Enemy1,20);
+        AddEnemyIdList(EnemyId.Enemy1,30);
+        AddEnemyIdList(EnemyId.Enemy1,40);
+        AddEnemyIdList(EnemyId.Enemy1,40);
+        AddEnemyIdList(EnemyId.Enemy1,40);
         //AddEnemyIdList(EnemyId.Enemy2,10);
         //AddEnemyIdList(EnemyId.Enemy3,10);
         //AddEnemyIdList(EnemyId.Enemy4,10);
@@ -42,29 +49,44 @@ public class EnemyCreateManager
 
     public void CreateEnemyWave()
     {
-        for(int i=0;i<mPendingEnemy[mCurrentWaveIndex].Count;i++)
+        int count=mPendingEnemy[mCurrentWaveIndex].Count;
+        for(int i=0;i<count;i++)
         {
-            EnemyId enemyId=mPendingEnemy[mCurrentWaveIndex][i];
+            //保存当前变量供延迟函数用
+            int index=i;
+            int level=mLevel;
             DOVirtual.DelayedCall(i*mEnemyCreateTime,()=>
-            {  
-                Vector3Int logicPosition=mMap.GeturningPointList()[0];
+            { 
+                Vector3Int logicPosition=mMap.GetTurningPointList()[0];
                 Vector3 worldPosition=mMap.LogicToWorldPosition(logicPosition);
-                Enemy Enemy=NormalEnemy.Create(enemyId,new Vector3(worldPosition.x,worldPosition.y,-1),mLevel);
+                EnemyId enemyId=mPendingEnemy[mCurrentWaveIndex][index];
+                Enemy Enemy=NormalEnemy.Create(enemyId,new Vector3(worldPosition.x,worldPosition.y,-1),level);
                 mEnemies.Add(Enemy);
+                if(index==count-1)
+                {
+                    mIsEnemyWaveCreate=true;
+                }
             },false);
         }
         mCurrentWaveIndex++;
+        mLevel++;
     }
     public void OnUpdate()
     {
-        if(mEnemies.Count!=0)
+        //场上还有敌人或当前这波敌人没生成完成则不生成下一波
+        if(mEnemies.Count!=0||!mIsEnemyWaveCreate)
         {
             return;
         }
         if(mCurrentWaveIndex<mPendingEnemy.Count)
         {
-            CreateEnemyWave();
-            Debug.Log(mCurrentWaveIndex);
+            mIsEnemyWaveCreate=false;
+            DOVirtual.DelayedCall(3,()=>
+            {
+                CreateEnemyWave();
+                Debug.Log(mCurrentWaveIndex);
+            });
+            
         }
     }
 }

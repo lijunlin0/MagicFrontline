@@ -3,7 +3,6 @@ using UnityEngine;
 //弓箭子弹 -- 跟踪子弹
 public class BulletBow : Bullet
 {
-    private Enemy mTarget;
     public static BulletBow Create(Tower tower,Enemy target,int points)
     {
         GameObject bulletPrefab=Resources.Load<GameObject>("FightObject/Bullet/BulletBow");
@@ -14,17 +13,15 @@ public class BulletBow : Bullet
     }
     protected void Init(Tower tower,Enemy target,int points)
     {
-        base.Init(tower,points);
-        mTarget=target;
-        mAnimator.Play(GetAnimationName("BulletBow",tower.GetLevel()));
+        base.Init(tower,target,points);
+        mAnimator.Play("BulletBow"+tower.GetLevel().ToString());
     }
     public override void OnUpdate()
     {
         base.OnUpdate();
-        if(mIsDead)
+        if(mTarget!=null)
         {
-            return;
+            FightUtility.MoveTowardsTarget(gameObject,mTarget.gameObject,mMoveSpeed,OffsetAngle);
         }
-        FightUtility.MoveTowardsTarget(gameObject,mTarget.gameObject,mMoveSpeed,OffsetAngle);
     }
 }

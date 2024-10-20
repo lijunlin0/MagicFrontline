@@ -18,7 +18,7 @@ public enum EnemyId
     Boss2,
     Boss3,
 }
-public enum AttackEffectId
+public enum StatusEffectId
 {
     None=0,                 
     MoveSpeedDecrease,      //降低移动速度
@@ -26,36 +26,44 @@ public enum AttackEffectId
 
 public class Enemy : MonoBehaviour
 {
+    public const float MoveSpeedReductionPercent=30;
+    public const float MoveSpeedReductionDuration=2;
     private EnemyId mEnemyId;
     protected bool mIsDead=false;
     protected Property mProperty;
     protected Animator mAnimator;
     protected HealthBar mHealthBar;
+    protected List<StatusEffectId> mStatusEffectIdList;
     protected List<Vector3> mTurningPointList;
     protected SpriteRenderer mSpriteRenderer;
     protected MyCollider mCollider;
+    //是否正在减速
+    protected bool mIsMoveSpeedDebuff=false;
     protected float mMoveDistance;
     //现在的路径点下标
     protected int mTurningPointIndex;
     protected int mHealth;
-    protected int mMoveSpeed=200;
+    protected float mMoveSpeed=200;
     public bool isDamage=false;
     protected virtual void Init(EnemyId enemyId,Property baseProperty)
     {
         mEnemyId=enemyId;
         mProperty=baseProperty;
         mHealth=mProperty.GetBaseHealth();
+        mAnimator=GetComponent<Animator>();
         mMoveSpeed=baseProperty.GetBaseMoveSpeed();
         mTurningPointIndex=1;
         mCollider=new MyCollider(GetComponent<PolygonCollider2D>());
         mSpriteRenderer=GetComponent<SpriteRenderer>();
         mHealthBar=HealthBar.Create(this);
+        mStatusEffectIdList=new List<StatusEffectId>();
         mTurningPointList=new List<Vector3>();
-        List<Vector3Int> logicPointList=FightModel.GetCurrent().GetMap().GeturningPointList();
+        List<Vector3Int> logicPointList=FightModel.GetCurrent().GetMap().GetTurningPointList();
         foreach(Vector3Int logicPosition in logicPointList)
         {
             mTurningPointList.Add(FightModel.GetCurrent().GetMap().LogicToWorldPosition(logicPosition));
         }
+        Debug.Log("敌人血量:"+mHealth);
     }
 
     public void OnUpdate()
@@ -66,26 +74,13 @@ public class Enemy : MonoBehaviour
         }
         mCollider.OnUpdate();
         Move();
-
-        //掉血---测试代码
-        return;
-        if(isDamage)
-        {
-            return;
-        }
-        DOVirtual.DelayedCall(1,()=>
-        {
-            Damage(10);
-            isDamage=false;
-        });
-        isDamage=true;
-        
     }
 
     private void Move()
     {
         if(mTurningPointIndex>=mTurningPointList.Count)
         {
+            mIsDead=true;
             return;
         }
         
@@ -110,11 +105,20 @@ public class Enemy : MonoBehaviour
     }
 
     //受击
-    public void Damage(int points,AttackEffectId attackEffectId=AttackEffectId.None)
+    public void Damage(int points,StatusEffectId statusEffectId=StatusEffectId.None)
     {
+        Color color=mSpriteRenderer.color;
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(mSpriteRenderer.material.DOColor(Color.red,0.1f));
+        sequence.Append(mSpriteRenderer.material.DOColor(color,0.1f));
+        sequence.Play();
         mProperty.ChangeCurrentHealth(-points);
         mHealth=mProperty.GetCurrentHealth();
         mHealthBar.OnHealthChanged();
+        if(statusEffectId!=StatusEffectId.None)
+        {
+            AddStatusEffect(statusEffectId);
+        }
         if(mHealth<=0)
         {
             mIsDead=true;
@@ -122,22 +126,33 @@ public class Enemy : MonoBehaviour
     }
     public int GetHealth(){return mHealth;}
     
-    public void HaveAttackEffect(AttackEffectId attackEffectId)
+    public void AddStatusEffect(StatusEffectId statusEffectId)
     {
-        if(attackEffectId==AttackEffectId.MoveSpeedDecrease)
+        if(!HasStatusEffect(statusEffectId)&&statusEffectId==StatusEffectId.MoveSpeedDecrease)
         {
-            
+            mMoveSpeed*=(100-MoveSpeedReductionPercent)/100;
+            mStatusEffectIdList.Add(statusEffectId);
+            DOVirtual.DelayedCall(MoveSpeedReductionDuration,()=>
+            {
+                mMoveSpeed=mProperty.GetBaseMoveSpeed();
+                mStatusEffectIdList.Remove(statusEffectId);
+            });
         }
     }
 
+    public bool HasStatusEffect(StatusEffectId statusEffectId){return mStatusEffectIdList.Contains(statusEffectId);}
+
     public void PlayDestroyAnimation()
     {
-        mCollider.GetCollider().enabled=false;
-        //mAnimator.Play(mEnemyId.ToString()+"Death");
-        mSpriteRenderer.DOFade(0,1).OnComplete(()=>
+        mAnimator.Play(mEnemyId.ToString()+"Death");
+        mSpriteRenderer.DOFade(0,0.4f).OnComplete(()=>
         {
             DOTween.Kill(gameObject);
-            Destroy(gameObject,3);  
+            DOVirtual.DelayedCall(5,()=>
+            {
+                mCollider.GetCollider().enabled=false;
+                Destroy(gameObject);  
+            });
         });
     }
 

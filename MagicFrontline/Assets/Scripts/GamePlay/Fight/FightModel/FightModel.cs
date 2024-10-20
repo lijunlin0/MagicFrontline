@@ -50,6 +50,7 @@ public class FightModel
         mTowers=new Dictionary<int,Tower>();
         mBulletList=new List<Bullet>();
         mMap=Map.Create();
+        Map.CreatePortal();
         mEnemyCreateManager=new EnemyCreateManager();
         mTowerCreateManager=new TowerCreateManager();
     }

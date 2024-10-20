@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     protected float OffsetAngle=-90;
     protected bool mIsDead;
-    protected int mMoveSpeed=1200;
+    protected int mMoveSpeed=2000;
     protected double mLiveTime;
     protected double mMaxLifeTime;
     protected Tower mSource;
-    protected AttackEffectId mAttackEffectId;
+    protected StatusEffectId mStatusEffectId;
     //子弹伤害
     protected int mPoints=1;
     protected List<Enemy> mIgnoreList;
@@ -18,27 +19,44 @@ public class Bullet : MonoBehaviour
     protected bool mIsPenetrate;
     protected MyCollider mCollider;
     protected Animator mAnimator;
+    protected Enemy mTarget;
 
-    protected virtual void Init(Tower source,int points,AttackEffectId attackEffectId=AttackEffectId.None)
+    protected virtual void Init(Tower source,Enemy target,int points,StatusEffectId attackEffectId=StatusEffectId.None)
     {
-        mAttackEffectId=attackEffectId;
+        mStatusEffectId=attackEffectId;
         mCollider=new MyCollider(GetComponent<PolygonCollider2D>());
         mAnimator=GetComponent<Animator>();
         mSource=source;
+        mTarget=target;
         mPoints=points;
         mLiveTime=0;
-        mMaxLifeTime=3;
+        mMaxLifeTime=5;
         mIsPenetrate=false;    
         mIgnoreList=new List<Enemy>();
+        mAnimator.Play("Bullet"+source.GetName()+source.GetLevel());
     }
 
     public virtual void OnUpdate()
     {
+        if(mIsDead)
+        {
+            return;
+        }
         mCollider.OnUpdate();
         mLiveTime+=Time.deltaTime;
         if(mLiveTime>=mMaxLifeTime)
         {
             mIsDead=true;
+        }
+        //目标敌人死亡
+        if(mTarget != null && mTarget.IsDead())
+        {
+            //重新获取一个敌人替换为目标
+            mTarget=FightUtility.GetTargetEnemy(transform.position,100);
+            if(mTarget==null)
+            {
+                FightUtility.MoveTowardsRotation(gameObject,mMoveSpeed,OffsetAngle);
+            }
         }
     }
 
@@ -64,21 +82,17 @@ public class Bullet : MonoBehaviour
             else
             {
                 mIgnoreList.Add(target);
-                target.Damage(mPoints,mAttackEffectId);
+                target.Damage(mPoints,mStatusEffectId);
             }
         }
         else
         {
             mIsDead=true;
-            target.Damage(mPoints,mAttackEffectId);
+            target.Damage(mPoints,mStatusEffectId);
         }
     }
 
     public bool IsDead(){return mIsDead;}
     public MyCollider GetCollider(){return mCollider;}
     public int GetPoints(){return mPoints;}
-    protected string GetAnimationName(string bulletName,int level)
-    {
-        return bulletName+"0"+level;
-    }
 }

@@ -31,6 +31,13 @@ public class Map : MonoBehaviour
         map.Init();
         return map;
     }
+    public static void CreatePortal()
+    {
+        List<Vector3Int> turningPointList=FightModel.GetCurrent().GetMap().GetTurningPointList(); 
+        //创建传送门
+        Portal.Create(turningPointList[0],false);
+        Portal.Create(turningPointList[turningPointList.Count-1],true);
+    }
 
     public void Init()
     {
@@ -41,7 +48,6 @@ public class Map : MonoBehaviour
         mHeight=mBuildTileMap.cellBounds.size.y;
         InitTileType();
         InitWayPoint();
-        
     }
 
     public void InitWayPoint()
@@ -51,13 +57,12 @@ public class Map : MonoBehaviour
         mTurningPointList.Add(new Vector3Int(-5,-2,0));
         mTurningPointList.Add(new Vector3Int(4,-2,0));
         mTurningPointList.Add(new Vector3Int(4,2,0));
-        mTurningPointList.Add(new Vector3Int(-5,2,0));
         mWayPointCount=18;
     }
 
     public int GetWayPointCount(){return mWayPointCount;}
 
-    public List<Vector3Int> GeturningPointList()
+    public List<Vector3Int> GetTurningPointList()
     {
         return mTurningPointList;
     }

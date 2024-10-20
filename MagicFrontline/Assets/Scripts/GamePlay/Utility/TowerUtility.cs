@@ -11,15 +11,16 @@ public class TowerUtility
         Config=JsonMapper.ToObject(configText.text);
     }
 
-    public static Tuple<int,float> GetBasePropertySheet(string towerName,int level)
+    public static Tuple<int,float,int> GetBasePropertySheet(string towerName,int level)
     {
         JsonData towerData=Config[towerName];
         
         Debug.Log("等级:"+level);
         int attack=(int)towerData["Attack"][level-1];
         float attackInterval=(float)(double)towerData["AttackInterval"][level-1];
-        Debug.Log("等级:"+level+",伤害:"+attack+",攻击间隔:"+attackInterval);
-        Tuple<int,float> property=new Tuple<int, float>(attack,attackInterval);
+        int shootRange=(int)towerData["ShootRange"][level-1];
+        Debug.Log("等级:"+level+",伤害:"+attack+",攻击间隔:"+attackInterval+",攻击范围:"+shootRange);
+        Tuple<int,float,int> property=new Tuple<int, float,int>(attack,attackInterval,shootRange);
         return property;
     }
 

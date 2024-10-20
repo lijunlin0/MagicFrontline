@@ -36,6 +36,11 @@ public class TowerSelectUI : MonoBehaviour
             }
             mSelectTowerCallback();
         });
+        //攻击范围显示
+        Tower tower=fightModel.GetTower(createPosition);
+        int shootRange=tower.GetShootRange();
+        RectTransform rectTransform=transform.Find("ShootRange").GetComponent<RectTransform>();
+        rectTransform.sizeDelta=new Vector2(shootRange*2,shootRange*2);
         int level=fightModel.GetTower(createPosition).GetLevel();
         if(level>=Tower.MaxLevel)
         {
@@ -44,11 +49,7 @@ public class TowerSelectUI : MonoBehaviour
             return;
         }
         
-        //攻击范围显示
-        Tower tower=fightModel.GetTower(createPosition);
-        int shootRange=tower.GetShootRange();
-        RectTransform rectTransform=transform.Find("ShootRange").GetComponent<RectTransform>();
-        rectTransform.sizeDelta=new Vector2(shootRange*2,shootRange*2);
+        
 
         //升级按钮
         Button levelUpButton=transform.Find("LevelUp").GetComponent<Button>();
@@ -56,7 +57,7 @@ public class TowerSelectUI : MonoBehaviour
         {
             
             fightModel.RemoveTower(createPosition);
-            fightModel.AddTower(CreateLevelUpTower(tower,tower.GetLevel()+1),mCreatePosition);
+            fightModel.AddTower(CreateLevelUpTower(tower,tower.GetLevel()+1,tower.transform.rotation),mCreatePosition);
             if(gameObject!=null)
             {
                 Destroy(gameObject);
@@ -65,31 +66,31 @@ public class TowerSelectUI : MonoBehaviour
         });
     }
 
-    private Tower CreateLevelUpTower(Tower tower,int level)
+    private Tower CreateLevelUpTower(Tower tower,int level,Quaternion rotation)
     {
         if (tower is Bow)
         {
-            return Bow.Create(level,mCreatePosition);
+            return Bow.Create(level,mCreatePosition,rotation);
         }
         else if (tower is FrozenBow)
         {
-            return FrozenBow.Create(level,mCreatePosition);
+            return FrozenBow.Create(level,mCreatePosition,rotation);
         }
         else if (tower is Jet)
         {
-            return Jet.Create(level,mCreatePosition);
+            return Jet.Create(level,mCreatePosition,rotation);
         }
         else if (tower is ExplosiveSlingshot)
         {
-            return ExplosiveSlingshot.Create(level,mCreatePosition);
+            return ExplosiveSlingshot.Create(level,mCreatePosition,rotation);
         }
         else if (tower is LightwaveStone)
         {
-            return LightwaveStone.Create(level,mCreatePosition);
+            return LightwaveStone.Create(level,mCreatePosition,rotation);
         }
         else
         {
-            return ThunderStone.Create(level,mCreatePosition);
+            return ThunderStone.Create(level,mCreatePosition,rotation);
         }
     }
 

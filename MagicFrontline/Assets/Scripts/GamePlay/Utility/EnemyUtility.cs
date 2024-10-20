@@ -20,7 +20,7 @@ public class EnemyUtility
         int healthAdd=(int)enemyData["Health"][1];
         int moveSpeed=(int)enemyData["MoveSpeed"];
 
-        property.Init(health,healthAdd,moveSpeed);
+        property.Init(health+(level-1)*healthAdd,moveSpeed);
         return property;
     }
 

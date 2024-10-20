@@ -6,6 +6,8 @@ public class Tower : MonoBehaviour
 {
     protected const float OffsetAngle=-90;
     public const int MaxLevel=3;
+    protected string mName;
+    protected StatusEffectId mStatusEffectId;
     protected int mAttack=10;
     protected float mAttackinterval=1;
     protected bool mIsDead=false;
@@ -17,36 +19,71 @@ public class Tower : MonoBehaviour
     protected Enemy mTargetEnemy;
     protected Vector3Int mPosition;
     protected Animator mAnimator;
-    public virtual void Init(int level,Vector3Int position,Tuple<int ,float> property)
+    protected float mAnimationOffsetTime=0;
+    //是否需要在攻击时朝向敌人
+    protected bool mIsRotate=false;
+    public virtual void Init(int level,Vector3Int position,Tuple<int,float,int> property,string name,StatusEffectId statusEffectId=StatusEffectId.None)
     {
         mLevel=level;
+        mName=name;
         mPosition=position;
+        mStatusEffectId=statusEffectId;
         transform.position=FightModel.GetCurrent().GetMap().LogicToWorldPosition(mPosition);
+        transform.position=new Vector3(transform.position.x,transform.position.y,-1);
         mAttack=property.Item1;
         mAttackinterval=property.Item2;
+        mShootRange=property.Item3;
         mAnimator=GetComponent<Animator>();
+        PlayIdleAnimation();
     }
     public virtual void OnUpdate()
     {
         mCanShoot=HasTarget();
         //朝向目标
-        if(mCanShoot)
+        if(mIsRotate&&mCanShoot)
         {
-            Vector3 direction=(mTargetEnemy.transform.position-transform.position).normalized;
-            transform.rotation=FightUtility.DirectionToRotation(direction,OffsetAngle);
+            Vector3 direction = (mTargetEnemy.transform.position - transform.position).normalized;
+            Quaternion targetRotation = FightUtility.DirectionToRotation(direction, OffsetAngle);
+
+            float degreesPerSecond = 150f; // 控制旋转速度，可以根据需要调整
+            
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, degreesPerSecond * Time.deltaTime);
+            float angleDifference=Quaternion.Angle(transform.rotation,targetRotation);
+            float shootAngleThreshold = 5f; //小于这个角度可以发射
+            if (angleDifference <= shootAngleThreshold)
+            {
+                // 射击
+                if (mDefaultShootTime >= mAttackinterval)
+                {
+                    PlayAttackAnimation();
+                    DOVirtual.DelayedCall(mAnimationOffsetTime,()=>
+                    {
+                        mShootCallback();
+                    });
+                    mDefaultShootTime = 0;
+                }
+            }
         }
-        //射击
-        if(mDefaultShootTime>=mAttackinterval&&mCanShoot)
+        else if(mCanShoot)
         {
-            mShootCallback();
-            mDefaultShootTime=0;
+            // 射击
+            if (mDefaultShootTime >= mAttackinterval)
+            {
+                PlayAttackAnimation();
+                DOVirtual.DelayedCall(mAnimationOffsetTime,()=>
+                {
+                    mShootCallback();
+                });
+                mDefaultShootTime = 0;
+            }
         }
+
         mDefaultShootTime+=Time.deltaTime;
     }
 
     protected bool HasTarget()
     {
-        mTargetEnemy=FightUtility.GetTargetEnemy(this,mShootRange);
+        mTargetEnemy=FightUtility.GetTargetEnemy(transform.position,mShootRange,mStatusEffectId);
         return mTargetEnemy!=null;
     }
 
@@ -62,4 +99,15 @@ public class Tower : MonoBehaviour
     public int GetLevel(){return mLevel;}
     public Vector3Int GetPosition(){return mPosition;}
     public int GetShootRange(){return mShootRange;}
+    protected void PlayIdleAnimation()
+    {
+        Debug.Log("名字:"+mName+"Idle"+mLevel.ToString());
+        mAnimator.Play(mName+"Idle"+mLevel.ToString());
+    }
+    protected void PlayAttackAnimation()
+    {
+        mAnimator.Play(mName+"Shoot"+mLevel.ToString());
+    }
+
+    public string GetName(){return mName;}
 }

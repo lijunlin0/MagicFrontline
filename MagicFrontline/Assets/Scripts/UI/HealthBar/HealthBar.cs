@@ -12,7 +12,8 @@ public class HealthBar : MonoBehaviour
     public static HealthBar Create(Enemy enemy)
     {
         GameObject prefab=Resources.Load<GameObject>("UI/HealthBar");
-        GameObject healthObject=Instantiate(prefab,enemy.transform.position,Quaternion.identity,GameObject.Find("Canvas").transform);
+        GameObject healthObject=Instantiate(prefab,GameObject.Find("Canvas").transform);
+        healthObject.transform.position=new Vector3(enemy.transform.position.x,enemy.transform.position.y+YOffset,enemy.transform.position.z);
         HealthBar healthBar=healthObject.AddComponent<HealthBar>();
         healthBar.Init(enemy);
         return healthBar;

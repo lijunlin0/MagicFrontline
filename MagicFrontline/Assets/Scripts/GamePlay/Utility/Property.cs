@@ -1,14 +1,12 @@
 public class Property
 {
     private int mMaxHealth;
-    private int mHealthAdd;
     private int mCurrentHealth;
-    private int mBaseMoveSpeed;
-    private int mCurrentMoveSpeed;
-    public void Init(int baseHealth,int healthAdd,int baseMoveSpeed)
+    private float mBaseMoveSpeed;
+    private float mCurrentMoveSpeed;
+    public void Init(int baseHealth,int baseMoveSpeed)
     {
         mMaxHealth=baseHealth;
-        mHealthAdd=healthAdd;
         mBaseMoveSpeed=baseMoveSpeed;
         mCurrentHealth=mMaxHealth;
         mCurrentMoveSpeed=mBaseMoveSpeed;
@@ -16,9 +14,8 @@ public class Property
 
     public int GetBaseHealth(){return mMaxHealth;}
     public int GetCurrentHealth(){return mCurrentHealth;}
-    public int GetBaseMoveSpeed(){return mBaseMoveSpeed;}
-    public int GetCurrentMoveSpeed(){return mCurrentMoveSpeed;}
-    public int GetHealthAdd(){return mHealthAdd;}
+    public float GetBaseMoveSpeed(){return mBaseMoveSpeed;}
+    public float GetCurrentMoveSpeed(){return mCurrentMoveSpeed;}
 
     public void ChangeCurrentHealth(int changeHealth){ mCurrentHealth+=changeHealth;}
     public void ChangeCurrentMoveSpeed(int changeMoveSpeed){mCurrentMoveSpeed+=changeMoveSpeed;}
