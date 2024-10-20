@@ -4,31 +4,37 @@
     "Bow" : {
         "Attack" : [8, 10, 12],
         "AttackInterval" : [1.0,0.8,0.6],
-        "ShootRange":[600,650,700]
+        "ShootRange":[600,650,700],
+        "CreatePrice":[100,200,400]
     },
     "FrozenBow" : {
         "Attack" : [3, 6, 9],
         "AttackInterval" : [1.0,0.8,0.6],
-        "ShootRange":[600,750,700]
+        "ShootRange":[600,750,700],
+        "CreatePrice":[120,240,480]
     },
     "ExplosiveSlingshot" : {
         "Attack" : [4, 8, 10],
         "AttackInterval" : [1.0,0.8,0.6],
-        "ShootRange":[600,700,800]
+        "ShootRange":[600,700,800],
+        "CreatePrice":[140,280,560]
     },
     "Jet" : {
-        "Attack" : [7, 8, 10],
+        "Attack" : [7, 8, 10], 
         "AttackInterval" : [1.0,0.8,0.6],
-        "ShootRange":[500,600,700]
+        "ShootRange":[500,600,700],
+        "CreatePrice":[150,300,600]
     },
     "LightwaveStone" : {
         "Attack" : [3, 5, 7],
         "AttackInterval" : [1.5,1.5,1.5],
-        "ShootRange":[400,500,600]
+        "ShootRange":[400,500,600],
+        "CreatePrice":[150,300,600]
     },
     "ThunderStone" : {
         "Attack" : [5, 6, 7],
         "AttackInterval" : [2.0,1.6,1.0],
-        "ShootRange":[500,550,600]
+        "ShootRange":[500,550,600],
+        "CreatePrice":[160,320,640]
     }
 }
