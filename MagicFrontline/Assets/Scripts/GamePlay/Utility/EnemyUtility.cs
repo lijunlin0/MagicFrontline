@@ -19,8 +19,8 @@ public class EnemyUtility
         int health=(int)enemyData["Health"][0];
         int healthAdd=(int)enemyData["Health"][1];
         int moveSpeed=(int)enemyData["MoveSpeed"];
-
-        property.Init(health+(level-1)*healthAdd,moveSpeed);
+        int coinCount=(int)enemyData["CoinCount"];
+        property.Init(health+(level-1)*healthAdd,moveSpeed,coinCount);
         return property;
     }
 

@@ -22,7 +22,7 @@ public class LightwaveStone : Tower
     {
         base.Init(level,position,property,"LightwaveStone");
         mIsRotate=false;
-        mAnimationOffsetTime=0.25f;
+        mAnimationOffsetTime=(DefaultAnimationDuration-AnimationDurationReduce*(mLevel-1))/2;
         mShootCallback=()=>
         {
             Enemy targetEnemy=FightUtility.GetTargetEnemy(transform.position,mShootRange);

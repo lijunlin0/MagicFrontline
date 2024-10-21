@@ -39,11 +39,11 @@ public class EnemyCreateManager
     {
         mPendingEnemy.Clear();
         AddEnemyIdList(EnemyId.Enemy1,10);
-        AddEnemyIdList(EnemyId.Enemy1,20);
-        AddEnemyIdList(EnemyId.Enemy1,30);
-        AddEnemyIdList(EnemyId.Enemy1,40);
-        AddEnemyIdList(EnemyId.Enemy1,40);
-        AddEnemyIdList(EnemyId.Enemy1,40);
+        AddEnemyIdList(EnemyId.Enemy2,10);
+        AddEnemyIdList(EnemyId.Enemy3,10);
+        AddEnemyIdList(EnemyId.Enemy7,10);
+        AddEnemyIdList(EnemyId.Enemy8,10);
+
         //AddEnemyIdList(EnemyId.Enemy2,10);
         //AddEnemyIdList(EnemyId.Enemy3,10);
         //AddEnemyIdList(EnemyId.Enemy4,10);
@@ -57,12 +57,13 @@ public class EnemyCreateManager
         {
             //保存当前变量供延迟函数用
             int index=i;
+            int currentWaveIndex=mCurrentWaveIndex;
             int level=mLevel;
             DOVirtual.DelayedCall(i*mEnemyCreateTime,()=>
             { 
                 Vector3Int logicPosition=mMap.GetTurningPointList()[0];
                 Vector3 worldPosition=mMap.LogicToWorldPosition(logicPosition);
-                EnemyId enemyId=mPendingEnemy[mCurrentWaveIndex][index];
+                EnemyId enemyId=mPendingEnemy[currentWaveIndex][index];
                 Enemy Enemy=NormalEnemy.Create(enemyId,new Vector3(worldPosition.x,worldPosition.y,-1),level);
                 mEnemies.Add(Enemy);
                 if(index==count-1)
@@ -87,7 +88,6 @@ public class EnemyCreateManager
             DOVirtual.DelayedCall(3,()=>
             {
                 CreateEnemyWave();
-                Debug.Log(mCurrentWaveIndex);
             });
             
         }

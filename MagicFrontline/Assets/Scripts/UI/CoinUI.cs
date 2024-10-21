@@ -6,6 +6,7 @@ public class CoinUI : MonoBehaviour
 {
     private int mCurrentCoinCount;
     private TMP_Text mText;
+    private AudioSource mAudioSource;
     public static CoinUI Create()
     {
         GameObject coinUI = GameObject.Find("CoinUI");
@@ -16,6 +17,7 @@ public class CoinUI : MonoBehaviour
 
     private void Init()
     {
+        mAudioSource=GetComponent<AudioSource>();
         mText=transform.Find("Text").GetComponent<TextMeshProUGUI>();
         mCurrentCoinCount=FightModel.GetCurrent().GetCoins();
         mText.text=mCurrentCoinCount.ToString();
@@ -24,5 +26,9 @@ public class CoinUI : MonoBehaviour
     public void OnCoinsChanged(int changePoints)
     {
         mText.text=(mCurrentCoinCount+=changePoints).ToString();
+    }
+    public void PlayCSound()
+    {
+        mAudioSource.Play();
     }
 }

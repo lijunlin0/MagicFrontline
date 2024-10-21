@@ -14,11 +14,16 @@ public class BulletJet : Bullet
     protected void Init(Tower tower,Enemy target,int points)
     {
         base.Init(tower,target,points);
+        mMoveSpeed=4000;
         mAnimator.Play("BulletJet"+tower.GetLevel().ToString());
     }
     public override void OnUpdate()
     {
         base.OnUpdate();
-        FightUtility.MoveTowardsRotation(gameObject,mMoveSpeed,OffsetAngle);
+        if(mTarget!=null)
+        {
+            FightUtility.MoveTowardsRotation(gameObject,mMoveSpeed,OffsetAngle);
+        }
+       
     }
 }

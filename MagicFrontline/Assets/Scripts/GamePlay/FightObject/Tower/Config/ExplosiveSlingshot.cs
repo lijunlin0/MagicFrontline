@@ -19,7 +19,7 @@ public class ExplosiveSlingshot : Tower
     {
         base.Init(level,position,property,"ExplosiveSlingshot");
         mIsRotate=true;
-        mAnimationOffsetTime=0.25f;
+        mAnimationOffsetTime=(DefaultAnimationDuration-AnimationDurationReduce*(mLevel-1))/2;
         mShootCallback=()=>
         {
             Enemy targetEnemy=FightUtility.GetTargetEnemy(transform.position,mShootRange);

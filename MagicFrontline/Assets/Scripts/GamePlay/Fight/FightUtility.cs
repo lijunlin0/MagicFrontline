@@ -24,7 +24,6 @@ public class FightUtility
     public static void MoveTowardsRotation(GameObject gameObject,float MoveSpeed,float offsetAngle=0)
     {
         Vector3 moveDirection=FightUtility.RotationToDirection(gameObject.transform.rotation,offsetAngle);
-        Debug.Log("移动:"+moveDirection+",速度"+MoveSpeed);
         gameObject.transform.position+=moveDirection*MoveSpeed*Time.deltaTime;
     }
     public static void MoveTowardsTarget(GameObject gameObject,GameObject target,int moveSpeed,float offsetAngle=0)

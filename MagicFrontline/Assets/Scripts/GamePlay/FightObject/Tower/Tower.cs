@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    protected const float DefaultAnimationDuration=0.5f;
+    protected const float AnimationDurationReduce=0.166f;
     protected const float OffsetAngle=-90;
     public const int MaxLevel=3;
     protected string mName;
@@ -103,7 +105,6 @@ public class Tower : MonoBehaviour
     public int GetShootRange(){return mShootRange;}
     protected void PlayIdleAnimation()
     {
-        Debug.Log("名字:"+mName+"Idle"+mLevel.ToString());
         mAnimator.Play(mName+"Idle"+mLevel.ToString());
     }
     protected void PlayAttackAnimation()

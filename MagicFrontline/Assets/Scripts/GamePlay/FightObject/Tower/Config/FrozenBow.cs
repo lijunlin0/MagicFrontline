@@ -18,7 +18,7 @@ public class FrozenBow : Tower
     public void Init(int level,Vector3Int position,Tuple<int,float,int,int> property)
     {
         base.Init(level,position,property,"FrozenBow",StatusEffectId.MoveSpeedDecrease);
-        mAnimationOffsetTime=0.25f;
+        mAnimationOffsetTime=(DefaultAnimationDuration-AnimationDurationReduce*(mLevel-1))/2;
         mIsRotate=true;
         mShootCallback=()=>
         {

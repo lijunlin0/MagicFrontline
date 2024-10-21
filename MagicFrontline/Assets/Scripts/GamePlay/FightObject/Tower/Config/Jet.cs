@@ -19,7 +19,7 @@ public class Jet : Tower
     {
         base.Init(level,position,property,"Jet");
         mIsRotate=true;
-        mAnimationOffsetTime=0.25f;
+        mAnimationOffsetTime=(DefaultAnimationDuration-AnimationDurationReduce*(mLevel-1))/2;
         mShootCallback=()=>
         {
             Enemy targetEnemy=FightUtility.GetTargetEnemy(transform.position,mShootRange);

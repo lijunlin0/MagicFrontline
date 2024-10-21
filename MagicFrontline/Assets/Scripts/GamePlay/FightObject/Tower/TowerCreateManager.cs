@@ -30,14 +30,12 @@ public class TowerCreateManager
 
             if (mIsOpenTowerCreateUI)
             {
-                Debug.Log("删除建造UI");
                 GameObject.Destroy(mTowerCreateUI.gameObject);
                 mIsOpenTowerCreateUI = false;
                 return;
             }
             if (mIsOpenTowerSelectUI)
             {
-                Debug.Log("删除选择UI");
                 GameObject.Destroy(mTowerSelectUI.gameObject);
                 mIsOpenTowerSelectUI = false;
                 return;
@@ -46,13 +44,11 @@ public class TowerCreateManager
             // 如果点击在建造区域，创建塔建造 UI
             if (mMap.IsBuild(logicPosition))
             {
-                Debug.Log("创建建造UI");
                 mIsOpenTowerCreateUI = true;
                 mTowerCreateUI = TowerCreateUI.Create(logicPosition,()=>{mIsOpenTowerCreateUI=false;});
             }
             else if (mMap.IsTower(logicPosition))
             {
-                Debug.Log("创建选择UI");
                 mTowerSelectUI=TowerSelectUI.Create(logicPosition,()=>{mIsOpenTowerSelectUI=false;});
                 mIsOpenTowerSelectUI=true;
             }

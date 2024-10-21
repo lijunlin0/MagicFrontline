@@ -5,7 +5,7 @@ using UnityEngine;
 //弓箭
 public class Bow : Tower
 {
-    public static Bow Create(int level,Vector3Int position,Quaternion rotation = default)
+        public static Bow Create(int level,Vector3Int position,Quaternion rotation = default)
     {
         GameObject towerPrefab=Resources.Load<GameObject>("FightObject/Tower/Bow/Bow");
         GameObject towerObject=Instantiate(towerPrefab);
@@ -19,7 +19,8 @@ public class Bow : Tower
     {
         base.Init(level,position,property,"Bow");
         mIsRotate=true;
-        mAnimationOffsetTime=0.25f;
+        mAnimationOffsetTime=(DefaultAnimationDuration-AnimationDurationReduce*(mLevel-1))/2;
+        Debug.Log("动画偏移时间:"+mAnimationOffsetTime);
         mShootCallback=()=>
         {
             Enemy targetEnemy=FightUtility.GetTargetEnemy(transform.position,mShootRange);
