@@ -2,53 +2,63 @@
     "Comment":"敌人属性配置",
     
     "Enemy1" : {
-        "Health" : [20, 10],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [15, 10],
+        "MoveSpeed" : 350,
+        "CoinCount": 5,
+        "Name"   : "蚊子"
     },
     "Enemy2" : {
-        "Health" : [80, 40],
+        "Health" : [30, 20],
         "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "CoinCount": 1,
+        "Name"   : "变异黄蜂"
     },
     "Enemy3" : {
-        "Health" : [80, 40],
+        "Health" : [40, 20],
         "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "CoinCount": 1,
+        "Name"   : "蝙蝠"
     },
     "Enemy4" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [60, 40],
+        "MoveSpeed" : 200,
+        "CoinCount": 2,
+        "Name"   : "红色胖蝙蝠"
     },
     "Enemy5" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [80, 50],
+        "MoveSpeed" : 300,
+        "CoinCount": 3,
+        "Name"   : "独眼蝙蝠"
     },
     "Enemy6" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [40, 40],
+        "MoveSpeed" : 200,
+        "CoinCount": 1,
+        "Name"   : "无臂怪"
     },
     "Enemy7" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [60, 40],
+        "MoveSpeed" : 200,
+        "CoinCount": 1,
+        "Name"   : "白眼怪"
     },
     "Enemy8" : {
         "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "MoveSpeed" : 200,
+        "CoinCount": 2,
+        "Name"   : "小臂怪"
     },
     "Enemy9" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [100, 60],
+        "MoveSpeed" : 100,
+        "CoinCount": 3,
+        "Name"   : "蠕虫"
     },
     "Enemy10" : {
-        "Health" : [80, 40],
-        "MoveSpeed" : 250,
-        "Name"   : "丧尸"
+        "Health" : [160, 100],
+        "MoveSpeed" : 80,
+        "CoinCount": 5,
+        "Name"   : "呆呆怪"
     }
 }
