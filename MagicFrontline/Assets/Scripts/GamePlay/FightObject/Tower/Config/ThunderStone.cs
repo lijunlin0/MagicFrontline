@@ -5,7 +5,8 @@ using UnityEngine;
 //电击宝石
 public class ThunderStone : Tower
 {
-    protected int mBulletCount=3;
+    protected int mBulletCountAddition=2;
+    protected int mBulletCount=5;
     public static ThunderStone Create(int level,Vector3Int position,Quaternion rotation = default)
     {
         GameObject towerPrefab=Resources.Load<GameObject>("FightObject/Tower/ThunderStone/ThunderStone");
@@ -21,7 +22,7 @@ public class ThunderStone : Tower
     {
         base.Init(level,position,property,"ThunderStone");
         mIsRotate=false;
-        mBulletCount+=mLevel-1;
+        mBulletCount+=mBulletCountAddition*(level-1);
         Debug.Log("电击个数:"+mBulletCount);
         mShootCallback=()=>
         {

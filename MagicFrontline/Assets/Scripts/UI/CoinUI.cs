@@ -4,31 +4,28 @@ using UnityEngine.UI;
 
 public class CoinUI : MonoBehaviour
 {
-    private int mCurrentCoinCount;
+    private int mCurrentCoin;
     private TMP_Text mText;
-    private AudioSource mAudioSource;
     public static CoinUI Create()
     {
-        GameObject coinUI = GameObject.Find("CoinUI");
-        CoinUI ui= coinUI.AddComponent<CoinUI>();
+        GameObject UIControl=GameObject.Find("UIControl(Clone)").gameObject;
+        GameObject prefab = Resources.Load<GameObject>("UI/CoinUI");
+        GameObject uiObject=GameObject.Instantiate(prefab,UIControl.transform);
+        CoinUI ui= uiObject.AddComponent<CoinUI>();
         ui.Init();
         return ui;
     }
 
     private void Init()
     {
-        mAudioSource=GetComponent<AudioSource>();
         mText=transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        mCurrentCoinCount=FightModel.GetCurrent().GetCoins();
-        mText.text=mCurrentCoinCount.ToString();
+        mCurrentCoin=FightModel.GetCurrent().GetCoins();
+        mText.text=mCurrentCoin.ToString();
     }
 
-    public void OnCoinsChanged(int changePoints)
+    public void OnCoinsChanged()
     {
-        mText.text=(mCurrentCoinCount+=changePoints).ToString();
-    }
-    public void PlayCSound()
-    {
-        mAudioSource.Play();
+        mCurrentCoin=FightModel.GetCurrent().GetCoins();
+        mText.text=mCurrentCoin.ToString();
     }
 }

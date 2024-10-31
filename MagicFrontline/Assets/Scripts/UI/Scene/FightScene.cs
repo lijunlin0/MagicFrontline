@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class FightScene : MonoBehaviour
@@ -19,7 +20,10 @@ public class FightScene : MonoBehaviour
     }
     public void InitScene()
     {
-        Camera camera=Camera.main;
+        SettingButton.Create();
+        GameObject prefab=Resources.Load<GameObject>("UI/UIControl");
+        GameObject.Instantiate(prefab,GameObject.Find("UICanvas").transform);
+        Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        camera.orthographicSize = 540;
     }
-
 }

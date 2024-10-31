@@ -5,6 +5,7 @@ public class InitScene : MonoBehaviour
 {
     public void Awake()
     {
+        AudioManager.AudioManagerInit(GameObject.Find("AudioManager").AddComponent<AudioManager>());
         GameManager.GetInstance();
     }
 

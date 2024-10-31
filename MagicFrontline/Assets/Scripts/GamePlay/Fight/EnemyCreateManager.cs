@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.VisualScripting;
@@ -12,7 +13,6 @@ public class EnemyCreateManager
     private Vector3Int mCreatePosition;
     private List<Enemy> mEnemies;
     private List<List<EnemyId>> mPendingEnemy;
-    private EnemyWaveUI mEnemyWaveUI;
     private int mCurrentWaveIndex=0;
     //当前波次敌人生成是否完成
     private bool mIsEnemyWaveCreate=true;
@@ -21,9 +21,10 @@ public class EnemyCreateManager
         mEnemies=FightModel.GetCurrent().GetEnemies();
         mMap=FightModel.GetCurrent().GetMap();
         mPendingEnemy=new List<List<EnemyId>>();
-        LevelOneEnemyListInit();
-        mEnemyWaveUI=EnemyWaveUI.Create(mPendingEnemy.Count);
+        LevelEnemyListInit();
     }
+
+    public int GetMaxWave(){return mPendingEnemy.Count;}
 
     private void AddEnemyIdList(EnemyId enemyId,int num)
     {
@@ -35,23 +36,19 @@ public class EnemyCreateManager
         mPendingEnemy.Add(idList);
     }
 
-    public  void LevelOneEnemyListInit()
+    public  void LevelEnemyListInit()
     {
         mPendingEnemy.Clear();
-        AddEnemyIdList(EnemyId.Enemy1,10);
-        AddEnemyIdList(EnemyId.Enemy2,10);
-        AddEnemyIdList(EnemyId.Enemy3,10);
-        AddEnemyIdList(EnemyId.Enemy7,10);
-        AddEnemyIdList(EnemyId.Enemy8,10);
-
-        //AddEnemyIdList(EnemyId.Enemy2,10);
-        //AddEnemyIdList(EnemyId.Enemy3,10);
-        //AddEnemyIdList(EnemyId.Enemy4,10);
+        List<Tuple<EnemyId,int>> enemyList=LevelEnemyCreateUtility.GetBaseEnemyCreateList(FightModel.GetCurrent().GetLevel());
+        foreach(Tuple<EnemyId,int> pair in enemyList)
+        {
+            AddEnemyIdList(pair.Item1,pair.Item2);
+        }
     }
 
     public void CreateEnemyWave()
     {
-        mEnemyWaveUI.OnEnemyWavesChanged();
+        FightManager.GetCurrent().GetEnemyWaveUI().OnEnemyWavesChanged();
         int count=mPendingEnemy[mCurrentWaveIndex].Count;
         for(int i=0;i<count;i++)
         {
@@ -64,13 +61,13 @@ public class EnemyCreateManager
                 Vector3Int logicPosition=mMap.GetTurningPointList()[0];
                 Vector3 worldPosition=mMap.LogicToWorldPosition(logicPosition);
                 EnemyId enemyId=mPendingEnemy[currentWaveIndex][index];
-                Enemy Enemy=NormalEnemy.Create(enemyId,new Vector3(worldPosition.x,worldPosition.y,-1),level);
+                Enemy Enemy=NormalEnemy.Create(enemyId,new Vector3(worldPosition.x,worldPosition.y,-count+index-1),level);
                 mEnemies.Add(Enemy);
                 if(index==count-1)
                 {
                     mIsEnemyWaveCreate=true;
                 }
-            },false);
+            },false).SetId("EnemyCreate");
         }
         mCurrentWaveIndex++;
         mLevel++;
@@ -88,8 +85,11 @@ public class EnemyCreateManager
             DOVirtual.DelayedCall(3,()=>
             {
                 CreateEnemyWave();
-            });
-            
+            },false);
+        }
+        else
+        {
+            FightManager.GetCurrent().End(true);
         }
     }
 }

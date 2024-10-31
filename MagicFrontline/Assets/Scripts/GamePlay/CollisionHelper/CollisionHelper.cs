@@ -17,17 +17,25 @@ public static class CollisionHelper
     {
         List<Bullet> bullets=FightModel.GetCurrent().GetBullets();
         List<Enemy> enemies=FightModel.GetCurrent().GetEnemies();
-        foreach(Bullet bullet in bullets)
+        Map map=FightModel.GetCurrent().GetMap();
+       
+        
+        foreach(Enemy enemy in enemies)
         {
-            MyCollider collider1=bullet.GetCollider();
-            foreach(Enemy enemy in enemies)
-            {
-                MyCollider collider2=enemy.GetCollider();
+            MyCollider collider1=enemy.GetCollider();
+             foreach(Bullet bullet in bullets)
+             {
+                MyCollider collider2=bullet.GetCollider();
                 if(IsColliding(collider1,collider2))
                 {
                     bullet.OnColliderEnemy(enemy);
                 }
             }
+            if(map.GetCollider()!=null&&IsColliding(map.GetCollider(),enemy.GetCollider())&&!enemy.IsAlreadyOnBridge())
+            {
+                enemy.WalkOnBridge();
+            }
         }
+        
     }
 }

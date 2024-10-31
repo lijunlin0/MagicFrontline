@@ -22,7 +22,7 @@ public class BulletExplosiveSlingshot : Bullet
         base.OnUpdate();
         if(mTarget!=null)
         {
-            FightUtility.MoveTowardsTarget(gameObject,mTarget.gameObject,mMoveSpeed,OffsetAngle);
+            FightUtility.MoveTowardsTarget(gameObject,mTarget,mMoveSpeed,OffsetAngle);
         }
     }
     public override void OnColliderEnemy(Enemy target)

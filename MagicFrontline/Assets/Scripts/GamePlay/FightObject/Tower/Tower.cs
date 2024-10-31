@@ -32,7 +32,7 @@ public class Tower : MonoBehaviour
         mPosition=position;
         mStatusEffectId=statusEffectId;
         transform.position=FightModel.GetCurrent().GetMap().LogicToWorldPosition(mPosition);
-        transform.position=new Vector3(transform.position.x,transform.position.y,-1);
+        transform.position=new Vector3(transform.position.x,transform.position.y,-2);
         mAttack=property.Item1;
         mAttackinterval=property.Item2;
         mShootRange=property.Item3;
@@ -46,10 +46,10 @@ public class Tower : MonoBehaviour
         //朝向目标
         if(mIsRotate&&mCanShoot)
         {
-            Vector3 direction = (mTargetEnemy.transform.position - transform.position).normalized;
+            Vector3 direction = (mTargetEnemy.GetCenterPosition() - transform.position).normalized;
             Quaternion targetRotation = FightUtility.DirectionToRotation(direction, OffsetAngle);
 
-            float degreesPerSecond = 150f; // 控制旋转速度，可以根据需要调整
+            float degreesPerSecond = 240f; // 控制旋转速度，可以根据需要调整
             
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, degreesPerSecond * Time.deltaTime);
             float angleDifference=Quaternion.Angle(transform.rotation,targetRotation);
@@ -63,7 +63,7 @@ public class Tower : MonoBehaviour
                     DOVirtual.DelayedCall(mAnimationOffsetTime,()=>
                     {
                         mShootCallback();
-                    });
+                    },false);
                     mDefaultShootTime = 0;
                 }
             }
@@ -77,7 +77,7 @@ public class Tower : MonoBehaviour
                 DOVirtual.DelayedCall(mAnimationOffsetTime,()=>
                 {
                     mShootCallback();
-                });
+                },false);
                 mDefaultShootTime = 0;
             }
         }
@@ -98,7 +98,7 @@ public class Tower : MonoBehaviour
         {
             DOTween.Kill(gameObject);
             Destroy(gameObject);
-        });
+        },false);
     }
     public int GetLevel(){return mLevel;}
     public Vector3Int GetPosition(){return mPosition;}

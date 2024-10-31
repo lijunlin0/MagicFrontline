@@ -4,28 +4,30 @@ using UnityEngine.UI;
 
 public class EnemyWaveUI : MonoBehaviour
 {
-    private int mMaxWaveCount;
+    private int mMaxWave;
     private int mCurrentWaveCount;
     private TMP_Text mText;
-    public static EnemyWaveUI Create(int maxWaveCount)
+    public static EnemyWaveUI Create()
     {
-        GameObject EnemyWaveUI = GameObject.Find("EnemyWaveUI");
-        EnemyWaveUI ui= EnemyWaveUI.AddComponent<EnemyWaveUI>();
-        ui.Init(maxWaveCount);
+        GameObject UIControl=GameObject.Find("UIControl(Clone)").gameObject;
+        GameObject prefab = Resources.Load<GameObject>("UI/EnemyWaveUI");
+        GameObject uiObject=GameObject.Instantiate(prefab,UIControl.transform);
+        EnemyWaveUI ui= uiObject.AddComponent<EnemyWaveUI>();
+        ui.Init();
         return ui;
     }
 
-    private void Init(int maxWaveCount)
+    private void Init()
     {
         mText=transform.Find("Text").GetComponent<TextMeshProUGUI>();
         mCurrentWaveCount=0;
-        mMaxWaveCount=maxWaveCount;
-        mText.text=mCurrentWaveCount.ToString()+"/"+mMaxWaveCount.ToString()+"波";
+        mMaxWave=FightModel.GetCurrent().GetEnemyMaxWave();
+        mText.text=mCurrentWaveCount.ToString()+"/"+mMaxWave.ToString()+"波";
     }
 
     public void OnEnemyWavesChanged()
     {
         mCurrentWaveCount++;
-        mText.text=mCurrentWaveCount.ToString()+"/"+mMaxWaveCount.ToString()+"波";
+        mText.text=mCurrentWaveCount.ToString()+"/"+mMaxWave.ToString()+"波";
     }
 }

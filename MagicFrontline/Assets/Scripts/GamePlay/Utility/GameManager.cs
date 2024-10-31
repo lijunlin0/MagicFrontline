@@ -9,7 +9,9 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate=60;
         DOTween.Init();
         Utility.Init();
+        LevelUtility.Init();
         EnemyUtility.Init();
         TowerUtility.Init();
+        LevelEnemyCreateUtility.Init();
     }
 }

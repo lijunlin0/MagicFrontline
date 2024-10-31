@@ -9,7 +9,7 @@ public class NormalEnemy :Enemy
         enemyObject.transform.position=position;
         NormalEnemy enemy = enemyObject.AddComponent<NormalEnemy>();
         Property property=EnemyUtility.GetBasePropertySheet(enemyId.ToString(),level);
-        enemy.Init(EnemyId.Enemy1,property);
+        enemy.Init(enemyId,property);
         return enemy;
     }
 }

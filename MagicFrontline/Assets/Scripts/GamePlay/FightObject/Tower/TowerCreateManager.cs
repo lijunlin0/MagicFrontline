@@ -8,8 +8,7 @@ public class TowerCreateManager
     private TowerCreateUI mTowerCreateUI;
     private TowerSelectUI mTowerSelectUI;
     private bool mIsOpenTowerCreateUI = false;
-    private bool mIsOpenTowerSelectUI=false;
-
+    private bool mIsOpenTowerSelectUI = false;
     public TowerCreateManager()
     {
         mMap = FightModel.GetCurrent().GetMap();
@@ -17,17 +16,18 @@ public class TowerCreateManager
 
     public void OnUpdate()
     {
-        // 检测鼠标左键点击
-        if (Input.GetMouseButtonDown(0))
+        // 检测触摸输入
+        if (Input.touchCount > 0&&Input.GetTouch(0).phase == TouchPhase.Began)
         {
+            Touch touch = Input.GetTouch(0);
+
             // 如果点击了 UI，跳过其他逻辑
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             {
                 return;
             }
-
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(touch.position);
+            mousePosition.z = 0; // 确保 z 坐标为 0
             if (mIsOpenTowerCreateUI)
             {
                 GameObject.Destroy(mTowerCreateUI.gameObject);
@@ -40,24 +40,18 @@ public class TowerCreateManager
                 mIsOpenTowerSelectUI = false;
                 return;
             }
-            Vector3Int logicPosition=FightModel.GetCurrent().GetMap().WorldToLogicPosition(mousePosition);
+            Vector3Int logicPosition = mMap.WorldToLogicPosition(mousePosition);
             // 如果点击在建造区域，创建塔建造 UI
             if (mMap.IsBuild(logicPosition))
             {
                 mIsOpenTowerCreateUI = true;
-                mTowerCreateUI = TowerCreateUI.Create(logicPosition,()=>{mIsOpenTowerCreateUI=false;});
+                mTowerCreateUI = TowerCreateUI.Create(logicPosition, () => { mIsOpenTowerCreateUI = false; });
             }
             else if (mMap.IsTower(logicPosition))
             {
-                mTowerSelectUI=TowerSelectUI.Create(logicPosition,()=>{mIsOpenTowerSelectUI=false;});
-                mIsOpenTowerSelectUI=true;
+                mTowerSelectUI = TowerSelectUI.Create(logicPosition, () => { mIsOpenTowerSelectUI = false; });
+                mIsOpenTowerSelectUI = true;
             }
         }
     }
-
-    private void TowerLevelUpUI()
-    {
-        // 塔升级的逻辑
-    }
-
 }

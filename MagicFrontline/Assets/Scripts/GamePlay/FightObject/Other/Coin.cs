@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour 
 {
-    private const float OffsetPosition=100;
+    private const float OffsetPosition=40;
     private float OffsetAngle=-90;
-    private const float PauseTime=2f;
+    private const float PauseTime=1;
     private const float OffsetPauseTime=0.5f;
     private float mPauseTime;
     private const int MoveSpeedReductionFrame=30;
-    private const int mPoints=20;
+    private const int mPoints=40;
     private Vector3 mTargetPosition;
     private float mCreateTime=0;
-
-    //protected AudioSource mSound;
 
     private float mMoveSpeed;
     
@@ -35,8 +33,7 @@ public class Coin : MonoBehaviour
 
     private void Init(Vector3 createPosition)
     {
-        mTargetPosition=FightManager.GetCurrent().GetCointUI().transform.position;
-        //mSound=GetComponent<AudioSource>();
+        mTargetPosition=FightManager.GetCurrent().GetCoinUI().transform.position;
         mPauseTime=PauseTime+Random.Range(-OffsetPauseTime,OffsetPauseTime);
         mMoveSpeed=500;
     }
@@ -47,8 +44,7 @@ public class Coin : MonoBehaviour
         if(Vector3.Distance(mTargetPosition,transform.position)<=50)
         {
             FightModel.GetCurrent().AddCoins(mPoints);
-            FightManager.GetCurrent().GetCointUI().PlayCSound();
-            //mSound.Play();
+            AudioManager.GetCurrent().PlayCoinSound();
             Destroy(gameObject);
             return;
         }

@@ -6,8 +6,8 @@ using UnityEngine;
 //光波宝石
 public class LightwaveStone : Tower
 {
-    private float mBulletDefaultScale=3;
-    private float mBulletScaleAddition=0.5f;
+    private float mBulletDefaultScale=1.5f;
+    private float mBulletScaleAddition=0.25f;
     public static LightwaveStone Create(int level,Vector3Int position,Quaternion rotation = default)
     {
         GameObject towerPrefab=Resources.Load<GameObject>("FightObject/Tower/LightwaveStone/LightwaveStone");
@@ -33,17 +33,18 @@ public class LightwaveStone : Tower
             Debug.Log("光波等级:"+GetLevel());
             float bulletScale=mBulletDefaultScale+(GetLevel()-1)*mBulletScaleAddition;
             string animationName="BulletLightwaveStone2";
-            EffectArea area=EffectArea.Create("BulletLightwaveStoneArea",animationName,transform.position,(Enemy Enemy)=>
+            Vector3 createPosition=new Vector3(transform.position.x,transform.position.y,-1);
+            EffectArea area=EffectArea.Create("BulletLightwaveStoneArea",animationName,createPosition,(Enemy Enemy)=>
             {
                 Enemy.Damage(mAttack);
             },bulletScale);
             area.SetColliderEnabledCallback(()=>
             {
                 area.PlayDestroyAnimation(area.GetAnimationDuration());
-                DOVirtual.DelayedCall(area.GetAnimationDuration()-0.4f,()=>
+                DOVirtual.DelayedCall(area.GetAnimationDuration()-0.25f,()=>
                 {
                     area.Collide();
-                });
+                },false);
                 
             });
         };

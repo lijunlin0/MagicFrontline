@@ -26,7 +26,7 @@ public enum StatusEffectId
 
 public class Enemy : MonoBehaviour
 {
-    public const float MoveSpeedReductionPercent=60;
+    public const float MoveSpeedReductionPercent=40;
     public const float MoveSpeedReductionDuration=2;
     private EnemyId mEnemyId;
     protected bool mIsDead=false;
@@ -39,6 +39,9 @@ public class Enemy : MonoBehaviour
     protected MyCollider mCollider;
     protected GameObject mDisplay;
     protected GameObject mShadow;
+    protected GameObject mCenter;
+    protected GameObject mTop;
+    protected int mAttackPoints;
     //是否正在减速
     protected bool mIsMoveSpeedDebuff=false;
     protected float mMoveDistance;
@@ -47,19 +50,29 @@ public class Enemy : MonoBehaviour
     protected int mHealth;
     protected float mMoveSpeed=200;
     public bool isDamage=false;
+    protected bool mIsArrive=false;
     protected int mCoinCount;
+    private Dictionary<StatusEffectId, Tween> mActiveStatusEffects;
+    private bool mFlipX=false;
+    private bool mIsOnBridge=false;
     protected virtual void Init(EnemyId enemyId,Property baseProperty)
     {
         mEnemyId=enemyId;
         mProperty=baseProperty;
         mDisplay=transform.Find("Display").gameObject;
-        mShadow=transform.Find("Shadow").gameObject;
+        mShadow=transform.Find("Display/Shadow").gameObject;
+        mShadow.transform.localPosition =new Vector3(mShadow.transform.localPosition.x,mShadow.transform.localPosition.y,0.5f);
+        mCenter=transform.Find("Center").gameObject;
+        mTop=transform.Find("Top").gameObject;
         mHealth=mProperty.GetBaseHealth();
         mMoveSpeed=baseProperty.GetBaseMoveSpeed();
         mCoinCount=baseProperty.GetBaseCoinCount();
         Debug.Log("持有金币:"+mCoinCount);
+        mActiveStatusEffects=new Dictionary<StatusEffectId, Tween>();
         mAnimator=mDisplay.GetComponent<Animator>();
 
+        //除了boss外伤害都是1
+        mAttackPoints=IsBoss()?5:1;
         mTurningPointIndex=1;
         mCollider=new MyCollider(mDisplay.GetComponent<PolygonCollider2D>());
         mSpriteRenderer=mDisplay.GetComponent<SpriteRenderer>();
@@ -88,7 +101,9 @@ public class Enemy : MonoBehaviour
     {
         if(mTurningPointIndex>=mTurningPointList.Count)
         {
+            mIsArrive=true;
             mIsDead=true;
+            FightModel.GetCurrent().GetHurt(mAttackPoints);
             return;
         }
         
@@ -102,15 +117,33 @@ public class Enemy : MonoBehaviour
         {
             mTurningPointIndex++;
             //根据路径点调整朝向
-            if(mTurningPointIndex+1<mTurningPointList.Count)
+            if(mTurningPointIndex<mTurningPointList.Count&&mTurningPointList[mTurningPointIndex].x<mTurningPointList[mTurningPointIndex-1].x)
             {
-                mSpriteRenderer.flipX=mTurningPointList[mTurningPointIndex].x>mTurningPointList[mTurningPointIndex+1].x?true:false;
+                mFlipX=true;
             }
+            else if(mTurningPointIndex+1<mTurningPointList.Count)
+            {
+                mFlipX=mTurningPointList[mTurningPointIndex].x>mTurningPointList[mTurningPointIndex+1].x?true:false;
+            }
+            //翻转
+            transform.localScale=new Vector3(mFlipX?-1:1,1,1);
         }
         float moveDistance=mMoveSpeed*Time.deltaTime;
         transform.position+=direction.normalized*moveDistance;
         mMoveDistance+=moveDistance;
     }
+
+    public void WalkOnBridge()
+    {
+        mIsOnBridge=true;
+        List<Vector3> bridgePointList=FightModel.GetCurrent().GetMap().GetBridgePointList();
+        for(int i=0;i<bridgePointList.Count;i++)
+        {
+            mTurningPointList.Insert(mTurningPointIndex+i,bridgePointList[i]);
+        }
+    }
+
+    public bool IsAlreadyOnBridge(){return mIsOnBridge;}
 
     //受击
     public void Damage(int points,StatusEffectId statusEffectId=StatusEffectId.None)
@@ -136,15 +169,26 @@ public class Enemy : MonoBehaviour
     
     public void AddStatusEffect(StatusEffectId statusEffectId)
     {
-        if(!HasStatusEffect(statusEffectId)&&statusEffectId==StatusEffectId.MoveSpeedDecrease)
+        if(statusEffectId==StatusEffectId.MoveSpeedDecrease)
         {
-            mMoveSpeed*=(100-MoveSpeedReductionPercent)/100;
-            mStatusEffectIdList.Add(statusEffectId);
-            DOVirtual.DelayedCall(MoveSpeedReductionDuration,()=>
+            //重置持续时间
+            if(HasStatusEffect(statusEffectId))
             {
-                mMoveSpeed=mProperty.GetBaseMoveSpeed();
-                mStatusEffectIdList.Remove(statusEffectId);
-            });
+                mActiveStatusEffects[statusEffectId].Restart();
+            }
+            else
+            {
+                mMoveSpeed*=(100-MoveSpeedReductionPercent)/100;
+                mStatusEffectIdList.Add(statusEffectId);
+                Tween statusEffectTween=DOVirtual.DelayedCall(MoveSpeedReductionDuration,()=>
+                {
+                    mMoveSpeed=mProperty.GetBaseMoveSpeed();
+                    mStatusEffectIdList.Remove(statusEffectId);
+                    mActiveStatusEffects.Remove(statusEffectId);
+                },false);
+                mActiveStatusEffects[statusEffectId] = statusEffectTween;
+            }
+            
         }
     }
 
@@ -152,7 +196,10 @@ public class Enemy : MonoBehaviour
 
     public void PlayDestroyAnimation()
     {
-        Coin.Create(transform.position,mCoinCount);
+        if(!mIsArrive)
+        {
+            Coin.Create(transform.position,mCoinCount);
+        }
         mAnimator.Play(mEnemyId.ToString()+"Death");
         mShadow.GetComponent<SpriteRenderer>().DOFade(0,0.4f);
         mSpriteRenderer.DOFade(0,0.4f).OnComplete(()=>
@@ -162,7 +209,7 @@ public class Enemy : MonoBehaviour
             {
                 mCollider.GetCollider().enabled=false;
                 Destroy(gameObject);  
-            });
+            },false);
         });
     }
 
@@ -171,7 +218,14 @@ public class Enemy : MonoBehaviour
         return mMoveDistance/(FightModel.GetCurrent().GetMap().GetWayPointCount()-1)*Map.TileSize;
     }
 
+    public Vector3 GetCenterPosition(){return mCenter.transform.position;}
+    public Vector3 GetTopPosition(){return mTop.transform.position;}
+
     public Property GetProperty(){return mProperty;}
     public bool IsDead(){return mIsDead;}
     public MyCollider GetCollider(){return mCollider;}
+    public bool IsBoss()
+    {
+        return mEnemyId==EnemyId.Boss1||mEnemyId==EnemyId.Boss2||mEnemyId==EnemyId.Boss3;
+    }
 }

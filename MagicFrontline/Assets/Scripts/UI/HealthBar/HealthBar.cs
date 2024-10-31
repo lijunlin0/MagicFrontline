@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    private const int YOffset=100;
+    private const int YOffset=35;
+    private const int BossYOFfset=70;
+    private int mYOffset;
     private Enemy mEnemy;
     private Slider mHealthSlider;
     private Slider mDamageSlider;
@@ -12,17 +14,30 @@ public class HealthBar : MonoBehaviour
     public static HealthBar Create(Enemy enemy)
     {
         GameObject prefab=Resources.Load<GameObject>("UI/HealthBar");
-        GameObject healthObject=Instantiate(prefab,GameObject.Find("Canvas").transform);
-        healthObject.transform.position=new Vector3(enemy.transform.position.x,enemy.transform.position.y+YOffset,enemy.transform.position.z);
+        GameObject healthObject=Instantiate(prefab,GameObject.Find("BarCanvas").transform);
+        int yOffset;
+        if(enemy.IsBoss())
+        {
+            yOffset=BossYOFfset;
+            healthObject.transform.localScale=new Vector3(healthObject.transform.localScale.x*3,healthObject.transform.localScale.y*2,1);
+        }
+        else
+        {
+            yOffset=YOffset;
+        }
+        
         HealthBar healthBar=healthObject.AddComponent<HealthBar>();
-        healthBar.Init(enemy);
+        healthBar.Init(enemy,yOffset);
         return healthBar;
 
     }
 
-    private void Init(Enemy enemy)
+    private void Init(Enemy enemy,int yOffset)
     {
         mEnemy=enemy;
+        mYOffset=yOffset;
+        Vector3 enemyTopPosition=enemy.GetTopPosition();
+        transform.position=new Vector3(enemyTopPosition.x,enemyTopPosition.y+mYOffset,enemyTopPosition.z);
         mHealthSlider=transform.Find("Health").GetComponent<Slider>();
         mDamageSlider=transform.Find("Damage").GetComponent<Slider>();
         mHealthSlider.value=1;
@@ -54,6 +69,7 @@ public class HealthBar : MonoBehaviour
             mTween.Kill();
             Destroy(gameObject);
         }
-        transform.position=mEnemy.transform.position+new Vector3(0,YOffset,0);
+        Vector3 enemyPosition=mEnemy.GetTopPosition();
+        transform.position=new Vector3(enemyPosition.x,enemyPosition.y+mYOffset,0);
     }
 }

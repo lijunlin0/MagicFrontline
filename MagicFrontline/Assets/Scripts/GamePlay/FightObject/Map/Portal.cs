@@ -12,7 +12,7 @@ public class Portal:MonoBehaviour
     public void Init(Vector3Int createPosition,bool isHome)
     {
         transform.position=FightModel.GetCurrent().GetMap().LogicToWorldPosition(createPosition);
-        transform.position=new Vector3(transform.position.x,transform.position.y,-1);
+        transform.position=new Vector3(transform.position.x,transform.position.y,-100);
         if(!isHome)
         {
             return;

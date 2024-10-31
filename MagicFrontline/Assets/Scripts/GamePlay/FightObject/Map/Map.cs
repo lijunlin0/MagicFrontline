@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public enum TileType
@@ -13,14 +14,16 @@ public enum TileType
 
 public class Map : MonoBehaviour
 {
-    public const int TileSize = 256;
+    public const int TileSize = 128;
     private int mWidth;
     private int mHeight;    
     private Tilemap mBuildTileMap;
     private Tilemap mWayPointTileMap;
     private List<Vector3Int> mTurningPointList;
     private Tilemap mObstacleTileMap;
+    private MyCollider mCollider;
     private int mWayPointCount;
+    private List<Vector3> mBridgePointList;
     //某位置是否可建造
     private Dictionary<Vector3Int, TileType> mTileTypes;
 
@@ -44,20 +47,51 @@ public class Map : MonoBehaviour
         mBuildTileMap=transform.Find("Build").GetComponent<Tilemap>();
         mWayPointTileMap=transform.Find("WayPoint").GetComponent<Tilemap>();
         mObstacleTileMap=transform.Find("Obstacle").GetComponent<Tilemap>();
+        mCollider=null;
+        InitBridge();
         mWidth=mBuildTileMap.cellBounds.size.x;
         mHeight=mBuildTileMap.cellBounds.size.y;
         InitTileType();
         InitWayPoint();
     }
 
+    public void InitBridge()
+    {
+        Transform waypointsParent = GameObject.Find("Grid").transform.Find("WayPoint/Bridge");
+        if(waypointsParent!=null)
+        {
+            mBridgePointList=new List<Vector3>();
+            mCollider=new MyCollider(GameObject.Find("Grid").transform.Find("WayPoint").GetComponent<TilemapCollider2D>());
+            for (int i = 0; i < waypointsParent.childCount; i++)
+            {
+                Transform waypoint = waypointsParent.GetChild(i);
+                mBridgePointList.Add(waypoint.position);
+            }
+        }
+    }
+
+    public List<Vector3> GetBridgePointList(){return mBridgePointList;}
+
     public void InitWayPoint()
     {
-        mTurningPointList=new List<Vector3Int>();
-        mTurningPointList.Add(new Vector3Int(-5,2,0));
-        mTurningPointList.Add(new Vector3Int(-5,-2,0));
-        mTurningPointList.Add(new Vector3Int(4,-2,0));
-        mTurningPointList.Add(new Vector3Int(4,2,0));
-        mWayPointCount=18;
+         Scene currentScene = SceneManager.GetActiveScene();
+        // 获取场景名称
+        string sceneName = currentScene.name;
+        mTurningPointList=LevelUtility.GetTurningPoints(FightModel.LevelNameToLevel(sceneName));
+    }
+
+    public void Update()
+    {
+        if(mCollider!=null)
+        {
+            mCollider.OnUpdate();
+        }
+        
+    }
+
+    public MyCollider GetCollider()
+    {
+        return mCollider;
     }
 
     public int GetWayPointCount(){return mWayPointCount;}
@@ -140,6 +174,7 @@ public class Map : MonoBehaviour
                 if(mWayPointTileMap.HasTile(cellPosition))
                 {
                     mTileTypes[cellPosition]=TileType.Obstacle;
+                    mWayPointCount++;
                 }
             }
         }

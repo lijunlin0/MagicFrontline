@@ -15,10 +15,11 @@ public class TowerCreateUI : MonoBehaviour
     private TMP_Text mLightwaveStonePriceText;
     private TMP_Text mJetPriceText;
     private TMP_Text mThunderStonePriceText;
+    private bool mIsCreateSuccess=false;
 
     public static TowerCreateUI Create(Vector3Int createPosition,Callback selectTowerCallback)
     {
-        Canvas canvas=GameObject.Find("Canvas").GetComponent<Canvas>();
+        Canvas canvas=GameObject.Find("GameCanvas").GetComponent<Canvas>();
         GameObject prefab=Resources.Load<GameObject>("UI/TowerCreateUI");
         GameObject towerCreateUIObject=Instantiate(prefab,canvas.transform);
         TowerCreateUI towerCreateUI=towerCreateUIObject.AddComponent<TowerCreateUI>();
@@ -71,10 +72,12 @@ public class TowerCreateUI : MonoBehaviour
             {
                 case "Bow" :
                 int price=TowerUtility.GetTowerCreatePrice(towerName,1);
+                Debug.Log(price+","+coinsCount);
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(Bow.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造弓箭");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
 
@@ -83,7 +86,8 @@ public class TowerCreateUI : MonoBehaviour
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(FrozenBow.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造冰冻弓箭");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
 
@@ -92,7 +96,8 @@ public class TowerCreateUI : MonoBehaviour
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(ExplosiveSlingshot.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造爆炸弹弓");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
                 case "LightwaveStone" :
@@ -100,7 +105,8 @@ public class TowerCreateUI : MonoBehaviour
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(LightwaveStone.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造光波宝石");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
 
@@ -109,7 +115,8 @@ public class TowerCreateUI : MonoBehaviour
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(Jet.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造喷石嘴");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
 
@@ -118,10 +125,19 @@ public class TowerCreateUI : MonoBehaviour
                 if(price<=coinsCount)
                 {
                     FightModel.GetCurrent().AddTower(ThunderStone.Create(1,mCreatePosition),mCreatePosition);Debug.Log("建造电击宝石");
-                    FightModel.GetCurrent().RemoveCoins(price);  
+                    FightModel.GetCurrent().RemoveCoins(price);
+                    mIsCreateSuccess=true;
                 }
                 break;
                 default : break;
+            }
+            if(mIsCreateSuccess)
+            {
+                AudioManager.GetCurrent().PlayCreateTowerSound();
+            }
+            else
+            {
+                AudioManager.GetCurrent().PlayCreateTowerFailureSound();
             }
             if(gameObject!=null)
             {

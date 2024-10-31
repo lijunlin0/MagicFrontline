@@ -21,7 +21,7 @@ public class BulletBow : Bullet
         base.OnUpdate();
         if(mTarget!=null)
         {
-            FightUtility.MoveTowardsTarget(gameObject,mTarget.gameObject,mMoveSpeed,OffsetAngle);
+            FightUtility.MoveTowardsTarget(gameObject,mTarget,mMoveSpeed,OffsetAngle);
         }
     }
 }

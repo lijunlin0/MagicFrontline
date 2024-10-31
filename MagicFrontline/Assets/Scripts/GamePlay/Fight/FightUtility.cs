@@ -26,13 +26,14 @@ public class FightUtility
         Vector3 moveDirection=FightUtility.RotationToDirection(gameObject.transform.rotation,offsetAngle);
         gameObject.transform.position+=moveDirection*MoveSpeed*Time.deltaTime;
     }
-    public static void MoveTowardsTarget(GameObject gameObject,GameObject target,int moveSpeed,float offsetAngle=0)
+    public static void MoveTowardsTarget(GameObject gameObject,Enemy target,int moveSpeed,float offsetAngle=0)
     {
+        Vector3 targetPosition=target.GetCenterPosition();
         //朝向目标
-        Vector3 direction=(target.transform.position-gameObject.transform.position).normalized;
+        Vector3 direction=(targetPosition-gameObject.transform.position).normalized;
         gameObject.transform.rotation=FightUtility.DirectionToRotation(direction,offsetAngle);
         //向目标移动
-        Vector3 moveDirection=(target.transform.position-gameObject.transform.position).normalized;
+        Vector3 moveDirection=(targetPosition-gameObject.transform.position).normalized;
         gameObject.transform.position+=moveDirection*moveSpeed*Time.deltaTime;
     }
 

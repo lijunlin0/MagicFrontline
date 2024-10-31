@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class MyCollider
 {
-    private PolygonCollider2D mCollider;
+    private Collider2D mCollider;
     private bool mEnable;
     private float mCreateTime;
 
-    public MyCollider(PolygonCollider2D collider)
+    public MyCollider(Collider2D collider)
     {
         mCreateTime=0;
         mCollider = collider;
@@ -21,6 +21,6 @@ public class MyCollider
         }
     }
 
-    public PolygonCollider2D GetCollider(){return mCollider;}
+    public Collider2D GetCollider(){return mCollider;}
     public bool IsEnable(){return mEnable;}
 }

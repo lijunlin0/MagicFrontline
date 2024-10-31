@@ -1,12 +1,16 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
 public class FightModel
 {
     private static FightModel sCurrent;
+    private int mLevel;
     private int mCoins;
+    private int mHealth;
     private List<Enemy> mEnemyList;
     private Dictionary<int,Tower> mTowers;
     private List<Bullet> mBulletList;
@@ -18,6 +22,7 @@ public class FightModel
     public Dictionary<int,Tower> GetTowers(){return mTowers;}
     public List<Bullet> GetBullets(){return mBulletList;}
     public TowerCreateManager GetTowerCreateManager(){return mTowerCreateManager;}
+    public int GetEnemyMaxWave(){return mEnemyCreateManager.GetMaxWave();}
     public void AddEnemy(Enemy enemy){mEnemyList.Add(enemy);}
     public void AddTower(Tower tower,Vector3Int position)
     {
@@ -28,12 +33,30 @@ public class FightModel
     public void AddCoins(int number)
     {
         mCoins+=number;
-        FightManager.GetCurrent().GetCointUI().OnCoinsChanged(number);
+        FightManager.GetCurrent().GetCoinUI().OnCoinsChanged();
     }
     public void RemoveCoins(int number)
     {
         mCoins-=number;
-        FightManager.GetCurrent().GetCointUI().OnCoinsChanged(-number);
+        FightManager.GetCurrent().GetCoinUI().OnCoinsChanged();
+    }
+    public void SetLevel(int level){mLevel=level;}
+    public int GetLevel(){return mLevel;}
+    public void SetHealth(int health){mHealth=health;}
+    public void SetCoins(int coins){mCoins=coins;}
+    public void GetHurt(int points)
+    {
+        mHealth = Mathf.Max(mHealth - points, 0);
+        if(mHealth==0)
+        {
+            FightManager.GetCurrent().End(false);
+        }
+        FightManager.GetCurrent().GetHealthUI().OnHealthsChanged();
+    }
+    public int GetHealth(){return mHealth;}
+    public static int LevelNameToLevel(string levelName)
+    {
+        return int.Parse(levelName.Substring(5));
     }
     public int GetCoins(){return mCoins;}
     public void RemoveTower(Vector3Int position)
@@ -62,11 +85,12 @@ public class FightModel
         mEnemyList=new List<Enemy>();
         mTowers=new Dictionary<int,Tower>();
         mBulletList=new List<Bullet>();
-        mCoins=1000;
         mMap=Map.Create();
         Map.CreatePortal();
+        mLevel=LevelNameToLevel(SceneManager.GetActiveScene().name);
         mEnemyCreateManager=new EnemyCreateManager();
         mTowerCreateManager=new TowerCreateManager();
+        AudioManager.GetCurrent().PlayFightMusic(mLevel);
     }
 
     public void OnUpdate()

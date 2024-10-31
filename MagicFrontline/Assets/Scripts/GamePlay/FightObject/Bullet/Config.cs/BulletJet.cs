@@ -14,7 +14,7 @@ public class BulletJet : Bullet
     protected void Init(Tower tower,Enemy target,int points)
     {
         base.Init(tower,target,points);
-        mMoveSpeed=4000;
+        mMoveSpeed=2500;
         mAnimator.Play("BulletJet"+tower.GetLevel().ToString());
     }
     public override void OnUpdate()

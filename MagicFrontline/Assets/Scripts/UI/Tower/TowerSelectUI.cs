@@ -1,6 +1,4 @@
 using TMPro;
-using Unity.IO.LowLevel.Unsafe;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +14,7 @@ public class TowerSelectUI : MonoBehaviour
 
     public static TowerSelectUI Create(Vector3Int createPosition,Callback selectTowerCallback)
     {
-        Canvas canvas=GameObject.Find("Canvas").GetComponent<Canvas>();
+        Canvas canvas=GameObject.Find("GameCanvas").GetComponent<Canvas>();
         GameObject prefab=Resources.Load<GameObject>("UI/TowerSelectUI");
         GameObject towerSelectUIObject=Instantiate(prefab,canvas.transform);
         TowerSelectUI towerSelectUI=towerSelectUIObject.AddComponent<TowerSelectUI>();
@@ -44,6 +42,7 @@ public class TowerSelectUI : MonoBehaviour
         Button destroyButton=transform.Find("Remove").GetComponent<Button>();
         destroyButton.onClick.AddListener(()=>
         {
+            AudioManager.GetCurrent().PlayRemoveTowerSound();
             fightModel.RemoveTower(createPosition);
             fightModel.AddCoins(mRemovePrice);
             if(gameObject!=null)
@@ -73,9 +72,10 @@ public class TowerSelectUI : MonoBehaviour
             //钱足够升级
             if(mLevelUpPrice<=FightModel.GetCurrent().GetCoins())
             {
+                AudioManager.GetCurrent().PlayCreateTowerSound();
                 fightModel.RemoveTower(createPosition);
                 fightModel.AddTower(CreateLevelUpTower(tower,tower.GetLevel()+1,tower.transform.rotation),mCreatePosition);
-                fightModel.RemoveCoins(mRemovePrice);
+                fightModel.RemoveCoins(mLevelUpPrice);
             }
             if(gameObject!=null)
             {

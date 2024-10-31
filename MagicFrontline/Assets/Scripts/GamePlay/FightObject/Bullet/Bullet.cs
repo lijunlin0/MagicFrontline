@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviour
     protected MyCollider mCollider;
     protected Animator mAnimator;
     protected Enemy mTarget;
+    protected bool mHasAttack;
 
     protected virtual void Init(Tower source,Enemy target,int points,StatusEffectId attackEffectId=StatusEffectId.None)
     {
@@ -67,7 +68,7 @@ public class Bullet : MonoBehaviour
         {
             DOTween.Kill(gameObject);
             Destroy(gameObject);
-        });
+        },false);
     }
 
     //子弹碰撞敌人造成伤害
@@ -87,8 +88,12 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            mIsDead=true;
-            target.Damage(mPoints,mStatusEffectId);
+            if(!mHasAttack)
+            {
+                mHasAttack=true;
+                mIsDead=true;
+                target.Damage(mPoints,mStatusEffectId);
+            }
         }
     }
 
