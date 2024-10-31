@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8761976f00f8ffc4b9bea92a3bfc1fbe
+guid: 7afdd21061c3be245962e4b8842c7096
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 1
@@ -110,127 +110,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portal_0
+      name: Window_2
       rect:
         serializedVersion: 2
-        x: 5
-        y: 32
-        width: 24
-        height: 32
+        x: 117
+        y: 130
+        width: 20
+        height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2e6495ade20dab46ab85dfc1bad40d5
-      internalID: -634222723
+      spriteID: 37a7cb426fa67004db2268f7c89cb419
+      internalID: -928085924
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portal_1
+      name: Window_3
       rect:
         serializedVersion: 2
-        x: 37
-        y: 32
-        width: 24
-        height: 32
+        x: 10
+        y: 84
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d74326fdd3a2dda4aa870205bd537218
-      internalID: 1718647293
+      spriteID: 285b5a9d3a9b0d54baf0cc8141375554
+      internalID: 28007522
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portal_2
+      name: Window_4
       rect:
         serializedVersion: 2
-        x: 69
-        y: 32
-        width: 24
-        height: 32
+        x: 117
+        y: 108
+        width: 20
+        height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ef2bf7b5a40a5942b71fae3b099e0ac
-      internalID: 1591886225
+      spriteID: 846a29b06215af141a6c7f84bec92285
+      internalID: -1928557376
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portal_3
+      name: Window_5
       rect:
         serializedVersion: 2
-        x: 5
-        y: 0
-        width: 24
-        height: 32
+        x: 62
+        y: 78
+        width: 54
+        height: 22
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 4, w: 4}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec381e1dcc54e2146b7651ef9311f5fc
-      internalID: 752041677
+      spriteID: 2b33b0025db716941852fc10eef0bef9
+      internalID: 1394169028
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portal_4
+      name: Window_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 0
-        width: 24
-        height: 32
+        x: 78
+        y: 9
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 10, y: 10, z: 10, w: 10}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5851cfa7d7335c34da8efea28bfed893
-      internalID: 1996560661
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Portal_5
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 0
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2be9cbed4262a4243ba96a31bea37760
-      internalID: 116859594
+      spriteID: f8c3b3724890c7e47beede9a7627a733
+      internalID: -1627573804
       vertices: []
       indices: 
       edges: []
@@ -246,12 +225,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Portal_0: -634222723
-      Portal_1: 1718647293
-      Portal_2: 1591886225
-      Portal_3: 752041677
-      Portal_4: 1996560661
-      Portal_5: 116859594
+      Window_0: -1627573804
+      Window_1: 1631672960
+      Window_2: -928085924
+      Window_3: 28007522
+      Window_4: -1928557376
+      Window_5: 1394169028
+      Window_6: -1787869296
+      Window_7: 997204200
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
