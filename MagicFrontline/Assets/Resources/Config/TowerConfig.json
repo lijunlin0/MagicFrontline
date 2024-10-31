@@ -2,39 +2,39 @@
     "Comment":"塔属性配置",
     
     "Bow" : {
-        "Attack" : [8, 14, 20],
-        "AttackInterval" : [0.8,0.6,0.3],
-        "ShootRange":[600,650,700],
+        "Attack" : [18, 24, 30],
+        "AttackInterval" : [0.8,0.5,0.2],
+        "ShootRange":[275,300,350],
         "CreatePrice":[100,200,400]
     },
     "FrozenBow" : {
-        "Attack" : [4, 8, 12],
-        "AttackInterval" : [0.8,0.6,0.3],
-        "ShootRange":[600,750,700],
+        "Attack" : [8, 12, 16],
+        "AttackInterval" : [0.8,0.5,0.2],
+        "ShootRange":[275,300,350],
         "CreatePrice":[120,240,480]
     },
     "ExplosiveSlingshot" : {
-        "Attack" : [12, 18, 24],
+        "Attack" : [12, 16, 20],
         "AttackInterval" : [1.0,0.8,0.6],
-        "ShootRange":[600,700,800],
-        "CreatePrice":[140,280,560]
+        "ShootRange":[200,275,300],
+        "CreatePrice":[200,400,600]
     },
     "Jet" : {
         "Attack" : [10, 14, 18], 
         "AttackInterval" : [0.8,0.5,0.2],
-        "ShootRange":[500,600,700],
-        "CreatePrice":[150,300,600]
+        "ShootRange":[200,275,300],
+        "CreatePrice":[130,260,520]
     },
     "LightwaveStone" : {
-        "Attack" : [12, 14, 18],
+        "Attack" : [16, 18, 20],
         "AttackInterval" : [1.5,1.0,0.5],
-        "ShootRange":[400,500,600],
+        "ShootRange":[200,250,300],
         "CreatePrice":[150,300,600]
     },
     "ThunderStone" : {
-        "Attack" : [8, 12, 16],
-        "AttackInterval" : [2.0,1.6,1.0],
-        "ShootRange":[500,550,600],
+        "Attack" : [16, 18, 20],
+        "AttackInterval" : [1.4,1.1,0.8],
+        "ShootRange":[250,275,300],
         "CreatePrice":[160,320,640]
     }
 }

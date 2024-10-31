@@ -1,0 +1,48 @@
+{
+    "Comment":"关卡属性配置",
+    
+    "Level1" : [
+        [ "Enemy1" , 10],
+        [ "Enemy2" , 10],
+        [ "Enemy6" , 15],
+        [ "Enemy3" , 20],
+        [ "Enemy4" , 15],
+        [ "Enemy5" , 10],
+        [ "Enemy8" , 10],
+        [ "Enemy9" , 15],
+        [ "Enemy2" , 30],
+        [ "Enemy8" , 20],
+        [ "Boss1" , 1]
+    ],
+    "Level2" : [
+        
+        [ "Enemy7" , 10],
+        [ "Enemy3" , 10],
+        [ "Enemy2" , 10],
+        [ "Enemy6" , 15],
+        [ "Enemy5" , 15],
+        [ "Enemy4" , 20],
+        [ "Enemy3" , 20],
+        [ "Enemy2" , 20],
+        [ "Enemy8" , 15],
+        [ "Enemy9" , 20],
+        [ "Enemy10" , 20],
+        [ "Boss2" , 1]
+    ],
+    "Level3" : [
+        [ "Enemy7" , 10],
+        [ "Enemy6" , 15],
+        [ "Enemy4" , 15],
+        [ "Enemy2" , 20],
+        [ "Enemy1" , 20],
+        [ "Enemy2" , 20],
+        [ "Enemy3" , 20],
+        [ "Enemy8" , 20],
+        [ "Enemy10" , 20],
+        [ "Enemy5" , 20],
+        [ "Enemy8" , 20],
+        [ "Enemy9" , 20],
+        [ "Enemy10" , 30],
+        [ "Boss3" , 1]
+    ]
+}
