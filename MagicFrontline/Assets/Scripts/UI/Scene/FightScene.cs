@@ -24,6 +24,13 @@ public class FightScene : MonoBehaviour
         GameObject prefab=Resources.Load<GameObject>("UI/UIControl");
         GameObject.Instantiate(prefab,GameObject.Find("UICanvas").transform);
         Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        camera.orthographicSize = 540;
+        camera.orthographicSize = Utility.WindowHeight/2;
+        Canvas[] canvasList=FindObjectsOfType<Canvas>();
+        foreach(Canvas canvas in canvasList)
+        {
+            RectTransform rectTransform=canvas.GetComponent<RectTransform>();
+            rectTransform.sizeDelta=new Vector2(Utility.WindowWidth,Utility.WindowHeight);
+        }
+
     }
 }

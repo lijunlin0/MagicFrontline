@@ -19,8 +19,6 @@ public class MainScene : MonoBehaviour
         canvas.transform.GetComponent<RectTransform>().sizeDelta=new Vector3(CanvasWidth,CanvasHeight);
         HorizontalLayoutGroup group=canvas.transform.Find("Scroll View/Viewport/Content").GetComponent<HorizontalLayoutGroup>();
         int paddingValue=CanvasWidth/2-ImageWidth/2;
-        Debug.Log("值:"+paddingValue);
-        Debug.Log("屏幕宽度:"+Utility.WindowWidth);
         group.padding=new RectOffset(paddingValue,paddingValue,0,0);
         GameObject mContent = canvas.transform.Find("Scroll View/Viewport/Content").gameObject;
         mButtons = mContent.GetComponentsInChildren<Button>();
