@@ -6,10 +6,18 @@ using UnityEngine;
 public class LevelUtility
 {
     private static JsonData Config;
+    private static int mLevelCount=0;
     public static void Init()
     {
         TextAsset configText=Resources.Load<TextAsset>("Config/LevelConfig");
         Config=JsonMapper.ToObject(configText.text);
+        for(int i =1;i<=Config.Keys.Count;i++)
+        {
+            mLevelCount++;
+            PlayerPrefs.SetInt("Level"+i.ToString(),0);
+        }
+        Debug.Log("共有"+mLevelCount+"关");
+        PlayerPrefs.Save();
     }
 
     public static List<Vector3Int> GetTurningPoints(int level)
@@ -31,6 +39,16 @@ public class LevelUtility
         }
         
         return points;
+    }
+
+    public static void SetLevelPass(int level)
+    {
+        PlayerPrefs.SetInt("Level"+level.ToString(),1);
+        PlayerPrefs.Save();
+    }
+    public static bool GetLevelPass(int level)
+    {
+        return PlayerPrefs.GetInt("Level"+level.ToString())==1;
     }
 
 }

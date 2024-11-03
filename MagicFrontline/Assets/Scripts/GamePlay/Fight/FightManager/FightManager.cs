@@ -55,6 +55,10 @@ public class FightManager
     public EnemyWaveUI GetEnemyWaveUI(){return mEnemyWaveUI;}
     public void End(bool isWin)
     {
+        if(isWin)
+        {
+            LevelUtility.SetLevelPass(FightModel.GetCurrent().GetLevel());
+        }
         EndWindow.Create(isWin);
     }
 }

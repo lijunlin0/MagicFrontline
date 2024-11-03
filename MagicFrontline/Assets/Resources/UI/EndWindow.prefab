@@ -336,7 +336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' WIN!'
+  m_text: "\u8D62\u4E86"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c21924f189228054c8890310da6442f9, type: 2}
   m_sharedMaterial: {fileID: 61411520647360637, guid: c21924f189228054c8890310da6442f9, type: 2}

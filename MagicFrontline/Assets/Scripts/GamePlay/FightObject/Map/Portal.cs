@@ -15,9 +15,9 @@ public class Portal:MonoBehaviour
         transform.position=new Vector3(transform.position.x,transform.position.y,-100);
         if(!isHome)
         {
-            return;
+            SpriteRenderer spriteRenderer=transform.GetComponent<SpriteRenderer>();
+            spriteRenderer.color=Color.red;
         }
-        SpriteRenderer spriteRenderer=transform.GetComponent<SpriteRenderer>();
-        spriteRenderer.color=Color.red;
+        
     }
 }

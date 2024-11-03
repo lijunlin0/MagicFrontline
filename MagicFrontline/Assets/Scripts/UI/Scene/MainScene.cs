@@ -34,8 +34,23 @@ public class MainScene : MonoBehaviour
         for(int i=0;i<mButtons.Count();i++)
         {
             int index = i; // 捕获当前索引
+            GameObject mask=mButtons[i].transform.Find("Mask").gameObject;
+            GameObject check=mButtons[i].transform.Find("PassBackground/Check").gameObject;
+            if(LevelUtility.GetLevelPass(i+1))
+            {
+                mask.SetActive(false);
+                check.SetActive(true);
+            }
+            else
+            {
+                mask.SetActive(true);
+                check.SetActive(false);
+            }
+            Image img=mButtons[i].transform.Find("Image").GetComponent<Image>();
+            Sprite levelSprite=Resources.Load<Sprite>("LevelImage/Level"+(index+1).ToString());
+            img.sprite=levelSprite;
             TMP_Text text=mButtons[i].transform.Find("Text").GetComponent<TMP_Text>();
-            string levelName="Level"+(index+1).ToString();
+            string levelName="Level"+(i+1).ToString();
             text.text=levelName;
             mButtons[index].onClick.AddListener(()=>
             {
